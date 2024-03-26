@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
-import { useFormik } from 'formik'
-import * as Yup from 'yup'
+import React, { useState } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import './audioEncoder.css';
 
 const AudioEncoder = () => {
   const [audioFile, setAudioFile] = useState(null);
@@ -14,13 +15,12 @@ const AudioEncoder = () => {
   const audioSchema = Yup.object().shape({
     audio: Yup.mixed().required('Required'),
     secret: Yup.string().required('Required')
-});
+  });
 
   const encoding = useFormik({
     initialValues: {
       audio: '',
-      secret:''
-      
+      secret: ''
     },
     onSubmit: async values => {
       let formData = new FormData();
@@ -36,12 +36,12 @@ const AudioEncoder = () => {
           alert('Encoded');
         }
         return response.json();
-    })
+      })
       .then(data => {
         setEncodedAudio(data.audio);
         if(data.status === 200){
-            alert('Encoded')
-          }
+          alert('Encoded')
+        }
       })
       .catch(error => {
         console.error('Error:', error);
@@ -51,32 +51,82 @@ const AudioEncoder = () => {
   });
 
   return (
+    <div className='container mt-5 pb-4'>
+      <div className="card shadow-lg border-0 ">
+        <div className="card-body">
+          <div className="row">
+            <div className="col-md-7 ">
+              <div className="container">
+                <h1 className="mb-4">Audio Encoder</h1>
+                <form className='form-group' onSubmit={encoding.handleSubmit}>
+                  <div className="mb-3">
+                    <label className="form-label title">Select Audio File:</label>
+                    {encoding.touched.audio && encoding.errors.audio && (
+                      <div className="alert alert-danger mt-2 rounded-0">{encoding.errors.audio}</div>
+                    )}
+                    <div className="d-flex align-items-center">
+                      <input 
+                        type="file"
+                        name="audio"
+                        onChange={handleAudioChange}
+                        className="form-control d-none"
+                        id="customFileInput"
+                      />
+                       
+                      <label className="form-control rounded-0" htmlFor="customFileInput">
+                        {audioFile ? audioFile.name : 'Choose file'}
+                      </label>
+                      <button className="btn btn-outline-secondary rounded-0" type="button" onClick={() => document.getElementById('customFileInput').click()} style={{marginLeft:'20px'}}>
+                        Browse
+                      </button>
+                    </div>
+                    {audioFile && (
+  <div className='rounded-0 mt-3'>
+   
+    <audio controls>
+      <source src={URL.createObjectURL(audioFile)} type={audioFile.type} />
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+)}
+                  
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label title">Secret Message:</label>
+                    {encoding.touched.secret && encoding.errors.secret && (
+                      <div className="alert alert-danger mt-2 rounded-0">{encoding.errors.secret}</div>
+                    )}
+                    <input 
+                      type="text"
+                      name="secret"
+                      onChange={encoding.handleChange}
+                      value={encoding.values.secret}
+                      className="form-control rounded-0"
+                      placeholder='Secret message here...'
+                    />
+                   
+                  </div>
+                  <button type="submit" className="btn btn-primary rounded-0">Encode</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          {encodedAudio && (
+  <div className='mt-3 mx-3'>
     <div>
-      <h1>Audio Encoder</h1>
-      <form onSubmit={encoding.handleSubmit}>
-        <input 
-          type="file"
-          name="audio"
-          onChange={handleAudioChange}
-        />
-        {encoding.touched.audio && encoding.errors.audio ? (
-          <p className='error-label'>{encoding.errors.audio}</p>
-        ) : null}
-        <input 
-  type="text"
-  name="secret"
-  onChange={encoding.handleChange}
-  value={encoding.values.secret}
-/>
-{encoding.touched.secret && encoding.errors.secret ? (
-          <p className='error-label'>{encoding.errors.secret}</p>
-        ) : null}
-        <button type="submit">Encode</button>
-      </form>
-
-      {encodedAudio && <audio controls src={encodedAudio} />}
+      <audio controls src={encodedAudio} className='rounded-0' style={{ backgroundColor: 'transparent', border: 'none' }}  />
     </div>
-  )
-}
+    <div>
+      <a href={encodedAudio} download="encoded_audio.mp3" className="btn btn-primary rounded-0 mt-2">Download</a>
+    </div>
+  </div>
+)}
+         
+        </div>
+      </div>
+     
+    </div>
+  );
+};
 
 export default AudioEncoder;
