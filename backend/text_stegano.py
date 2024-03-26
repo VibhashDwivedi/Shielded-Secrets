@@ -121,7 +121,7 @@ def encode_txt_data():
     txt_encode(text1, save_path)
     with open('stego_text.txt', "rb") as text_file:  # Open the encoded text file
         text_string = base64.b64encode(text_file.read()).decode('utf-8')
-    return {'text': 'data:text/plain;base64,' + text_string}  # Return the encoded text as a base64 string
+    return {'text': 'data:text/plain;base64,' + text_string, 'filename': 'stego_text.txt'}  # Return the encoded text as a base64 string
 
 @text_stegano.route('/decode_text', methods=['POST'])
 def decode_txt_data():

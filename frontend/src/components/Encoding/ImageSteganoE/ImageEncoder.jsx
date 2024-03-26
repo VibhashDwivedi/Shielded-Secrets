@@ -41,6 +41,7 @@ const ImageEncoder = () => {
       })
       .then(data => {
         setEncodedImage(data.image);
+        encoding.resetForm(); 
         console.log(data);
         if(data.status === 200){
           alert('Encoded')
@@ -56,16 +57,18 @@ const ImageEncoder = () => {
   return (
     <div className='container mt-5 pb-4'>
       <div className="card shadow-lg border-0 ">
-        <div className="card-body">
+        <div className="card-body ">
           <div className="row">
             <div className="col-md-7 ">
               <div className="container">
                 <h1 className="mb-4">Image Encoder</h1>
+                <div className="card border-0">
+                  <div className="card-body form-card p-5">
                 <form className='form-group' onSubmit={encoding.handleSubmit}>
                   <div className="mb-3">
                     <label className="form-label title">Select an Image:</label>
                     {encoding.touched.image && encoding.errors.image && (
-                      <div className="alert alert-danger mt-2">{encoding.errors.image}</div>
+                      <div className="alert alert-danger mt-2 p-2 rounded-0">{encoding.errors.image}</div>
                     )}
                     <div className="d-flex align-items-center">
                       <input 
@@ -79,8 +82,11 @@ const ImageEncoder = () => {
                       <label className="form-control rounded-0" htmlFor="customFileInput">
                         {imageFile ? imageFile.name : 'Choose file'}
                       </label>
-                      <button className="btn btn-outline-secondary ml-3 rounded-0" type="button" onClick={() => document.getElementById('customFileInput').click()} style={{ marginLeft: '20px' }}>
-                        Browse
+                      <button className="btn btn-light ml-3 rounded-0" type="button" onClick={() => document.getElementById('customFileInput').click()} style={{ marginLeft: '20px' }}>
+                      <div className="d-flex">
+                      <i className="fa-solid fa-folder-open  mt-1 px-1"></i>  Browse
+                      </div>
+                     
                       </button>
                     </div>
                     
@@ -89,7 +95,7 @@ const ImageEncoder = () => {
                   <div className="mb-3">
                     <label className="form-label title">Secret Message:</label>
                     {encoding.touched.secret && encoding.errors.secret && (
-                      <div className="alert alert-danger mt-2">{encoding.errors.secret}</div>
+                      <div className="alert alert-danger mt-2 p-2 rounded-0">{encoding.errors.secret}</div>
                     )}
                     <input 
                       type="text"
@@ -114,7 +120,8 @@ const ImageEncoder = () => {
     </div>
   </div>
 )}
-
+</div>
+</div>
               </div>
             </div>
           </div>

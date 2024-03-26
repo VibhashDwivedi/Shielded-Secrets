@@ -39,6 +39,7 @@ const AudioEncoder = () => {
       })
       .then(data => {
         setEncodedAudio(data.audio);
+        encoding.resetForm();
         if(data.status === 200){
           alert('Encoded')
         }
@@ -58,11 +59,13 @@ const AudioEncoder = () => {
             <div className="col-md-7 ">
               <div className="container">
                 <h1 className="mb-4">Audio Encoder</h1>
+                <div className="card border-0">
+                  <div className="card-body p-5 form-card">
                 <form className='form-group' onSubmit={encoding.handleSubmit}>
                   <div className="mb-3">
                     <label className="form-label title">Select Audio File:</label>
                     {encoding.touched.audio && encoding.errors.audio && (
-                      <div className="alert alert-danger mt-2 rounded-0">{encoding.errors.audio}</div>
+                      <div className="alert alert-danger mt-2  p-2 rounded-0">{encoding.errors.audio}</div>
                     )}
                     <div className="d-flex align-items-center">
                       <input 
@@ -76,9 +79,10 @@ const AudioEncoder = () => {
                       <label className="form-control rounded-0" htmlFor="customFileInput">
                         {audioFile ? audioFile.name : 'Choose file'}
                       </label>
-                      <button className="btn btn-outline-secondary rounded-0" type="button" onClick={() => document.getElementById('customFileInput').click()} style={{marginLeft:'20px'}}>
-                        Browse
-                      </button>
+                      <button className="btn btn-light rounded-0" type="button" onClick={() => document.getElementById('customFileInput').click()} style={{marginLeft:'20px'}}>
+                     
+                     <div className="d-flex"> <i className="fa-solid fa-folder-open  mt-1 px-1"></i> Browse
+                     </div> </button>
                     </div>
                     {audioFile && (
   <div className='rounded-0 mt-3'>
@@ -94,7 +98,7 @@ const AudioEncoder = () => {
                   <div className="mb-3">
                     <label className="form-label title">Secret Message:</label>
                     {encoding.touched.secret && encoding.errors.secret && (
-                      <div className="alert alert-danger mt-2 rounded-0">{encoding.errors.secret}</div>
+                      <div className="alert alert-danger mt-2  p-2 rounded-0">{encoding.errors.secret}</div>
                     )}
                     <input 
                       type="text"
@@ -121,6 +125,8 @@ const AudioEncoder = () => {
     </div>
   </div>
 )}
+</div>
+</div>
          
         </div>
       </div>
