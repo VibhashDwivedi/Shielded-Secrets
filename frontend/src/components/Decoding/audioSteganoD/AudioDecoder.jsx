@@ -14,7 +14,15 @@ const AudioDecoder = () => {
   };
 
   const audioSchema = Yup.object().shape({
-    audio: Yup.mixed().required('Required')
+    audio: Yup.mixed()
+    .required('Required')
+    .test('fileFormat', 'Unsupported format. Please select an WAV audio file.', value => {
+      if (value) {
+        const supportedFormats = ['audio/wav'];
+        return supportedFormats.includes(value.type);
+      }
+      return true;
+    }),
   });
 
   const decoding = useFormik({

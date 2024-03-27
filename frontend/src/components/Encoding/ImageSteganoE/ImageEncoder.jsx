@@ -17,7 +17,15 @@ const ImageEncoder = () => {
 
   const postSchema = Yup.object().shape({
     secret: Yup.string().required('Required'),
-    image: Yup.mixed().required('Required')
+    image: Yup.mixed()
+    .required('Required')
+    .test('fileFormat', 'Unsupported format. Please select an image file.', value => {
+      if (value) {
+        const supportedFormats = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        return supportedFormats.includes(value.type);
+      }
+      return true;
+    }),
   });
 
   const encoding = useFormik({

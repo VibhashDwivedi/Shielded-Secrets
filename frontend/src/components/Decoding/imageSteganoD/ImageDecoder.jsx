@@ -16,7 +16,15 @@ const ImageDecoder = () => {
   };
 
   const imageSchema = Yup.object().shape({
-    image: Yup.mixed().required('Required')
+    image: Yup.mixed()
+    .required('Required')
+    .test('fileFormat', 'Unsupported format. Please select a PNG image file.', value => {
+      if (value) {
+        const supportedFormats = ['image/png'];
+        return supportedFormats.includes(value.type);
+      }
+      return true;
+    }),
   });
 
   const decoding = useFormik({

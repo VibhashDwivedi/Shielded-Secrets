@@ -14,7 +14,15 @@ const AudioEncoder = () => {
   };
 
   const audioSchema = Yup.object().shape({
-    audio: Yup.mixed().required('Required'),
+    audio: Yup.mixed()
+    .required('Required')
+    .test('fileFormat', 'Unsupported format. Please select an audio file.', value => {
+      if (value) {
+        const supportedFormats = ['audio/mpeg', 'audio/wav'];
+        return supportedFormats.includes(value.type);
+      }
+      return true;
+    }),
     secret: Yup.string().required('Required')
   });
 

@@ -15,6 +15,14 @@ const TextDecoder = () => {
 
   const textSchema = Yup.object().shape({
     file: Yup.mixed().required('Required')
+    .test('fileFormat', 'Unsupported Format, only .txt files are supported', value => {
+      if (value) {
+        const supportedFormats = ['.txt'];
+        const currentFormat = '.' + value.name.split('.').pop();
+        return supportedFormats.includes(currentFormat);
+      }
+      return true;
+    })
   });
 
   const decoding = useFormik({
