@@ -1,4 +1,5 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import { Toaster } from 'react-hot-toast';
 import AudioDecoder from './components/Decoding/audioSteganoD/AudioDecoder';
 import ImageDecoder from './components/Decoding/imageSteganoD/ImageDecoder';
 import TextDecoder from './components/Decoding/textSteganoD/TextDecoder';
@@ -17,7 +18,7 @@ import About from './components/pages/About/About';
 function App() {
   return (
    <div className='body-color'>
-
+ <Toaster position='top-center'/>
 <BrowserRouter>
 <Navbar/>
 <Routes>
@@ -34,7 +35,6 @@ function App() {
 </Routes>
 
 </BrowserRouter>
-
 </div>
   );
 }

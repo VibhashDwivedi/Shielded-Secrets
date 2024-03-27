@@ -111,7 +111,7 @@ def encode_audio():
 def decode_audio():
     audio_file = request.files['audio']
     filename = secure_filename(audio_file.filename)
-    directory = 'Sample_cover_files'
+    directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Sample_stego_files')
     if not os.path.exists(directory):
         os.makedirs(directory)
     save_path = os.path.join(directory, filename)

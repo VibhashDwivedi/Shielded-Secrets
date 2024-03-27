@@ -1,22 +1,21 @@
-import React, { useState } from 'react'
-import { useFormik } from 'formik'
-import * as Yup from 'yup'
-import { useEffect } from 'react';
+import React, { useState } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import './imageDecoder.css';
+import toast from 'react-hot-toast';
 
 const ImageDecoder = () => {
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
-  const [decodedMessage, setDecodedMessage] = useState(null);
-
-  
+  const [decodedMessage, setDecodedMessage] = useState('');
 
   const handleImageChange = (event) => {
     setImageFile(event.target.files[0]);
-    decoding.setFieldValue('image', event.currentTarget.files[0]);
     setImageUrl(URL.createObjectURL(event.target.files[0]));
+    decoding.setFieldValue('image', event.currentTarget.files[0]);
   };
 
-  const postSchema = Yup.object().shape({
+  const imageSchema = Yup.object().shape({
     image: Yup.mixed().required('Required')
   });
 
@@ -32,45 +31,99 @@ const ImageDecoder = () => {
         method: 'POST',
         body: formData
       })
-      .then(response => response.text())
+      .then(response =>{
+        if(response.status === 200){
+          toast.success('Decoded Successfully😊')
+        }
+        else
+          toast.error('Error Encountered😔')
+       return response.text()})
       .then(data => {
         setDecodedMessage(data);
-        
       })
       .catch(error => {
         console.error('Error:', error);
+        toast.error('Error Encountered😔')
       });
     },
-    validationSchema: postSchema
+    validationSchema: imageSchema
   });
 
-  useEffect(() => {
-    if (decodedMessage) {
-      setTimeout(() => {
-        alert('Decoded');
-      }, 0);
-    }
-  }, [decodedMessage]);
-
   return (
-    <div>
-      <h1>Decoder</h1>
-      <form onSubmit={decoding.handleSubmit}>
-        <input 
-          type="file"
-          name="image"
-          onChange={handleImageChange}
-        />
-        {decoding.touched.image && decoding.errors.image ? (
-          <p className='error-label'>{decoding.errors.image}</p>
-        ) : null}
-        {imageUrl && <img src={imageUrl} alt="Uploaded" height='200' width='200' />}
-        <button type="submit">Decode</button>
-      </form>
-
-      {decodedMessage && <p>Decoded message: {decodedMessage}</p>}
+    <div className='container mt-5 pb-4'>
+      <div className="card shadow-lg border-0 ">
+        <div className="card-body">
+        <h1 className=" decoder-head">Image Decoder</h1>
+                <p className='mb-4 para'>Decode Message hidden in an Image!!</p>
+          <div className="row">
+            <div className="col-md-7 ">
+              <div className="container">
+            
+                <div className="card border-0">
+                  <div className="card-body form-card p-5">
+                <form className='form-group' onSubmit={decoding.handleSubmit}>
+                  <div className="mb-3">
+                    <label className="form-label title">Image File:</label>
+                    {decoding.touched.image && decoding.errors.image && (
+                      <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">{decoding.errors.image}</div>
+                    )}
+                    <div className="d-flex align-items-center">
+                      <input 
+                        type="file"
+                        name="image"
+                        onChange={handleImageChange}
+                        className="form-control d-none"
+                        id="customFileInput"
+                      />
+                      <label className="form-control rounded-0" htmlFor="customFileInput">
+                        {imageFile ? imageFile.name : 'Choose file'}
+                      </label>
+                      <button className="btn btn-light ml-2 rounded-0" type="button" onClick={() => document.getElementById('customFileInput').click()} style={{ marginLeft: '20px' }} >
+                      <div className="d-flex">
+                      <i className="fa-solid fa-folder-open  mt-1 px-1 "></i>  Browse
+                      </div>
+                      </button>
+                    </div>
+                   
+                  </div>
+                  {imageUrl && <img src={imageUrl} alt="Uploaded" height='270' width='350' className="img-thumbnail mb-3 rounded-0 border-0" />}
+                  <div>
+                  <button type="submit" className="btn btn-primary rounded-0">Decode</button>
+                  </div> 
+                </form>
+                {decodedMessage && (
+                  <div className='mt-3'>
+                    <p className='title'>Decoded Message: </p>
+                    <div className="msg  p-2 border-black">
+                    {decodedMessage}
+                    </div>
+                   
+                  </div>
+                )}
+                </div>
+</div>
+              </div>
+            </div>
+            <div className="col-md-5">
+  <div className="container">
+    <div className="card border-0">
+      <div className="card-body bg-info-subtle">
+        <h1 className="decoder-head">Instructions</h1>
+        <p className='mb-4 para'>Follow these steps to decode your message from an image file:</p>
+        <ul>
+          <li className='para text-start'>Select an image file from which you wish to extract the secret message.</li>
+          <li className='para text-start'>Click on the 'Decode' button.</li>
+          <li className='para text-start'>The decoded message will be displayed below.</li>
+        </ul>
+      </div>
     </div>
-  )
-}
+  </div>
+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default ImageDecoder;

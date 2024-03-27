@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import './imageEncoder.css'
+import { toast } from 'react-hot-toast';
 
 const ImageEncoder = () => {
   const [imageFile, setImageFile] = useState(null);
@@ -35,40 +36,43 @@ const ImageEncoder = () => {
       })
       .then(response => {
         if(response.status === 200){
-          alert('Encoded');
+          toast.success('Encoded Successfully😊')
         }
+        else
+          toast.error('Error Encountered😔')
         return response.json();
       })
       .then(data => {
         setEncodedImage(data.image);
         encoding.resetForm(); 
         console.log(data);
-        if(data.status === 200){
-          alert('Encoded')
-        }
+        
       })
       .catch(error => {
-        console.error('Error:', error);
+        // console.error('Error:', error);
+        toast.error('Error Encountered😔')
       });
     },
     validationSchema: postSchema
   });
 
   return (
-    <div className='container mt-5 pb-4'>
-      <div className="card shadow-lg border-0 ">
+    <div className='container mt-5 pb-4' >
+      <div className="card shadow-lg border-0 " >
         <div className="card-body ">
+        <h1 className=" encoder-head">Image Encoder</h1>
+                <p className='mb-4 para'>Encode Your Message in an Image!!</p>
           <div className="row">
             <div className="col-md-7 ">
               <div className="container">
-                <h1 className="mb-4">Image Encoder</h1>
+               
                 <div className="card border-0">
                   <div className="card-body form-card p-5">
                 <form className='form-group' onSubmit={encoding.handleSubmit}>
                   <div className="mb-3">
                     <label className="form-label title">Select an Image:</label>
                     {encoding.touched.image && encoding.errors.image && (
-                      <div className="alert alert-danger mt-2 p-2 rounded-0">{encoding.errors.image}</div>
+                      <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">{encoding.errors.image}</div>
                     )}
                     <div className="d-flex align-items-center">
                       <input 
@@ -95,7 +99,7 @@ const ImageEncoder = () => {
                   <div className="mb-3">
                     <label className="form-label title">Secret Message:</label>
                     {encoding.touched.secret && encoding.errors.secret && (
-                      <div className="alert alert-danger mt-2 p-2 rounded-0">{encoding.errors.secret}</div>
+                      <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">{encoding.errors.secret}</div>
                     )}
                     <input 
                       type="text"
@@ -104,16 +108,19 @@ const ImageEncoder = () => {
                       value={encoding.values.secret}
                       className="form-control rounded-0"
                       placeholder='Secret Message here...'
+                      autoComplete='off'
                     />
                     
                   </div>
                   <button type="submit" className="btn btn-primary rounded-0">Encode</button>
                 </form>
-
+                
                 {encodedImage && (
   <div className='d-block'>
+    {/* put a label as encoded image */}
+    <label className="form-label title mt-2">Encoded Image:</label>
     <div>
-      <img src={encodedImage} alt="Encoded" height='270' width='350' className="img-thumbnail mt-3 rounded-0 border-0" />
+      <img src={encodedImage} alt="Encoded" height='270' width='350' className="img-thumbnail  rounded-0" />
     </div>
     <div>
       <a href={encodedImage} download="encoded_image.png" className="btn btn-primary rounded-0 mt-2">Download</a>
@@ -124,9 +131,25 @@ const ImageEncoder = () => {
 </div>
               </div>
             </div>
-          </div>
+            <div className="col-md-5">
+  <div className="container">
+    <div className="card border-0">
+      <div className="card-body bg-info-subtle">
+        <h1 className="encoder-head">Instructions</h1>
+        <p className='mb-4 para'>Follow these steps to encode your message in an image file:</p>
+        <ul>
+          <li className='para text-start'>Select an image file into which you wish to embed your secret message.</li>
+          <li className='para text-start'>Input the confidential message that you wish to embed within the image file.</li>
+          <li className='para text-start'>Click on the 'Encode' button.</li>
+          <li className='para text-start'>The encoded image will be displayed below.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
         </div>
       </div>
+    </div>
     </div>
   )
 }

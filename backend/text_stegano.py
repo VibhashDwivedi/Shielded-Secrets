@@ -127,7 +127,7 @@ def encode_txt_data():
 def decode_txt_data():
     stego_text = request.files['file']
     filename = secure_filename(stego_text.filename)
-    directory = 'Sample_text_files'
+    directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Sample_stego_files')
     if not os.path.exists(directory):
         os.makedirs(directory)
     save_path = os.path.join(directory, filename)
