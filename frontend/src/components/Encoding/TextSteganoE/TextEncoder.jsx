@@ -3,11 +3,13 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import './textEncoder.css';
 import toast from 'react-hot-toast';
+import Spinner from 'react-bootstrap/Spinner';
 
 const TextEncoder = () => {
   const [textFile, setTextFile] = useState(null);
   const [stegoFile, setStegoFile] = useState(null);
   const [stegoFileName, setStegoFileName] = useState('');
+  const [encodin, setEncodin] = useState(false);
 
   const handleFileChange = (event) => {
     setTextFile(event.target.files[0]);
@@ -37,6 +39,7 @@ const TextEncoder = () => {
       formData.append('file', textFile);
       formData.append('secretMessage', values.secretMessage);
 
+      setEncodin(true);
       const res = await fetch('http://localhost:5000/encode_text', {
         method: 'POST',
         body: formData
@@ -60,6 +63,7 @@ const TextEncoder = () => {
         console.error('Error:', error);
         toast.error('Error Encountered😔')
       });
+      setEncodin(false);
     },
     validationSchema: textSchema
   });
@@ -117,7 +121,15 @@ const TextEncoder = () => {
                     />
                     
                   </div>
-                  <button type="submit" className="btn btn-primary rounded-0">Encode</button>
+                  {encodin ? (
+                    <Spinner animation="border" role="status" style={{ color: 'blue', height: '40px', width: '40px' }}>
+                      <span className="visually-hidden">Encoding...</span>
+                    </Spinner>
+                  ) : (
+                    <button type="submit" className="btn btn-primary rounded-0 mb-3">
+                       Encode
+                    </button>
+                  )}
                 </form>
               
               {stegoFile && (

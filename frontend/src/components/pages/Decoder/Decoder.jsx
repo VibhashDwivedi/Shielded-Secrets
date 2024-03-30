@@ -66,7 +66,7 @@ const Encoder = () => {
                                 <Link className='btn btn-dark fs-4 p-3 py-2' to='/audio-decoder'>Audio Decoder</Link>
                               </div>
                               <div className="col-md-6 ">
-                                <Link className='btn btn-dark fs-4 p-3 py-2' to='#'>Video Decoder</Link>
+                                <Link className='btn btn-dark fs-4 p-3 py-2' to='/video-decoder'>Video Decoder</Link>
                               </div>
                             </div>
                           </div>

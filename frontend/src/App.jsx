@@ -12,6 +12,8 @@ import Home from './components/pages/Home/Home';
 import Encoder from './components/pages/Encoder/Encoder';
 import Decoder from './components/pages/Decoder/Decoder';
 import About from './components/pages/About/About';
+import VideoEncoder from './components/Encoding/VideoSteganoE/VideoEncoder';
+import VideoDecoder from './components/Decoding/videoSteganoD/VideoDecoder';
 
 
 
@@ -32,6 +34,8 @@ function App() {
 <Route path="/image-decoder" element={<ImageDecoder />} />
 <Route path="/text-encoder" element={<TextEncoder />} />
 <Route path="/text-decoder" element={<TextDecoder />} />
+<Route path="/video-encoder" element={<VideoEncoder />} />
+<Route path="/video-decoder" element={<VideoDecoder />} />
 </Routes>
 
 </BrowserRouter>

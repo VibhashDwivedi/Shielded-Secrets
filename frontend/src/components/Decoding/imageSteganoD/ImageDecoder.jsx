@@ -3,11 +3,14 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import './imageDecoder.css';
 import toast from 'react-hot-toast';
+import { Spinner } from 'react-bootstrap';
 
 const ImageDecoder = () => {
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [decodedMessage, setDecodedMessage] = useState('');
+  const [decodin, setDecodin] = useState(false)
+
 
   const handleImageChange = (event) => {
     setImageFile(event.target.files[0]);
@@ -35,6 +38,8 @@ const ImageDecoder = () => {
       let formData = new FormData();
       formData.append('image', imageFile);
 
+      setDecodin(true)
+
       const res = await fetch('http://localhost:5000/decode_img', {
         method: 'POST',
         body: formData
@@ -53,6 +58,7 @@ const ImageDecoder = () => {
         console.error('Error:', error);
         toast.error('Error Encountered😔')
       });
+      setDecodin(false)
     },
     validationSchema: imageSchema
   });
@@ -96,7 +102,13 @@ const ImageDecoder = () => {
                   </div>
                   {imageUrl && <img src={imageUrl} alt="Uploaded" height='270' width='350' className="img-thumbnail mb-3 rounded-0 border-0" />}
                   <div>
-                  <button type="submit" className="btn btn-primary rounded-0">Decode</button>
+                  {decodin ? (
+    <Spinner animation="border" role="status" style={{ color: 'blue', height: '40px', width: '40px' }}>
+      <span className="visually-hidden">Decoding...</span>
+    </Spinner>
+  ) : (
+    <button type="submit" className="btn btn-primary rounded-0">Decode</button>
+  )}
                   </div> 
                 </form>
                 {decodedMessage && (

@@ -3,10 +3,14 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import './audioEncoder.css';
 import toast from 'react-hot-toast';
+import Spinner from 'react-bootstrap/Spinner';
+
 
 const AudioEncoder = () => {
   const [audioFile, setAudioFile] = useState(null);
   const [encodedAudio, setEncodedAudio] = useState(null);
+  const [encodin, setEncodin] = useState(false);
+
 
   const handleAudioChange = (event) => {
     setAudioFile(event.target.files[0]);
@@ -36,6 +40,7 @@ const AudioEncoder = () => {
       formData.append('audio', audioFile);
       formData.append('secret', values.secret);
 
+      setEncodin(true);
       const res = await fetch('http://localhost:5000/encode_audio', {
         method: 'POST',
         body: formData
@@ -56,6 +61,7 @@ const AudioEncoder = () => {
         console.error('Error:', error);
         toast.error('Error Encountered😔')
       });
+      setEncodin(false);
     },
     validationSchema: audioSchema
   });
@@ -122,7 +128,16 @@ const AudioEncoder = () => {
                     />
                    
                   </div>
-                  <button type="submit" className="btn btn-primary rounded-0">Encode</button>
+                 
+                  {encodin ? (
+                    <Spinner animation="border" role="status" style={{ color: 'blue', height: '40px', width: '40px' }}>
+                      <span className="visually-hidden">Encoding...</span>
+                    </Spinner>
+                  ) : (
+                    <button type="submit" className="btn btn-primary rounded-0 mb-3">
+                       Encode
+                    </button>
+                  )}
                 </form>
                 {encodedAudio && (
   <div className='mt-3 '>

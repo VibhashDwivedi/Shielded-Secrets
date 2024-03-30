@@ -3,11 +3,13 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import './imageEncoder.css'
 import { toast } from 'react-hot-toast';
+import Spinner from 'react-bootstrap/Spinner';
 
 const ImageEncoder = () => {
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [encodedImage, setEncodedImage] = useState(null);
+  const [encodin, setEncodin] = useState(false);
 
   const handleImageChange = (event) => {
     setImageFile(event.target.files[0]);
@@ -38,6 +40,8 @@ const ImageEncoder = () => {
       formData.append('image', imageFile);
       formData.append('secret', values.secret);
 
+      setEncodin(true);
+
       const res = await fetch('http://localhost:5000/encode_img', {
         method: 'POST',
         body: formData
@@ -59,7 +63,11 @@ const ImageEncoder = () => {
       .catch(error => {
         // console.error('Error:', error);
         toast.error('Error Encountered😔')
-      });
+      }
+
+      
+      );
+      setEncodin(false);
     },
     validationSchema: postSchema
   });
@@ -120,7 +128,15 @@ const ImageEncoder = () => {
                     />
                     
                   </div>
-                  <button type="submit" className="btn btn-primary rounded-0">Encode</button>
+                  {encodin ? (
+                    <Spinner animation="border" role="status" style={{ color: 'blue', height: '40px', width: '40px' }}>
+                      <span className="visually-hidden">Encoding...</span>
+                    </Spinner>
+                  ) : (
+                    <button type="submit" className="btn btn-primary rounded-0 mb-3">
+                       Encode
+                    </button>
+                  )}
                 </form>
                 
                 {encodedImage && (

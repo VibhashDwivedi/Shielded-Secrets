@@ -3,10 +3,12 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import toast from 'react-hot-toast';
 import './audioDecoder.css';
+import { Spinner } from 'react-bootstrap';
 
 const AudioDecoder = () => {
   const [audioFile, setAudioFile] = useState(null);
   const [decodedMessage, setDecodedMessage] = useState('');
+  const [decodin, setDecodin] = useState(false);
 
   const handleAudioChange = (event) => {
     setAudioFile(event.target.files[0]);
@@ -33,6 +35,7 @@ const AudioDecoder = () => {
       let formData = new FormData();
       formData.append('audio', audioFile);
 
+      setDecodin(true);
       const res = await fetch('http://localhost:5000/decode_audio', {
         method: 'POST',
         body: formData
@@ -51,6 +54,7 @@ const AudioDecoder = () => {
         console.error('Error:', error);
         toast.error('Error Encountered😔')
       });
+      setDecodin(false);
     },
     validationSchema: audioSchema
   });
@@ -92,7 +96,13 @@ const AudioDecoder = () => {
                     </div>
                    
                   </div>
-                  <button type="submit" className="btn btn-primary rounded-0">Decode</button>
+                  {decodin ? (
+    <Spinner animation="border" role="status" style={{ color: 'blue', height: '40px', width: '40px' }}>
+      <span className="visually-hidden">Decoding...</span>
+    </Spinner>
+  ) : (
+    <button type="submit" className="btn btn-primary rounded-0">Decode</button>
+  )}
                 </form>
                 {decodedMessage && (
                   <div className='mt-3'>
