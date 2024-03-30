@@ -88,96 +88,91 @@ const VideoDecoder = () => {
   });
 
   return (
-      <div className='container mt-5 pb-4'>
-        <div className="card shadow-lg border-0">
-          <div className="card-body">
-            <h1 className="decoder-head">Video Decoder</h1>
-            <p className='mb-4 para'>Decode Your Message from a video!!</p>
-            <div className="row">
-              <div className="col-md-7">
-                <div className="container">
-                  <div className="card border-0">
-                    <div className="card-body form-card p-5">
-                    <form onSubmit={decoding.handleSubmit}>
-  <div className="mb-3">
-    <label className="form-label title">Select a Video:</label>
-    {decoding.touched.video && decoding.errors.video ? (
-      <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">{decoding.errors.video}</div>
-    ) : null}
-    <div className="d-flex align-items-center">
-      <input type="file" id="customFileInput" accept="video/*" onChange={handleVideoChange} className="form-control rounded-0 d-none"/>
-      <label className="form-control rounded-0 text-truncate" htmlFor="customFileInput">
-        {videoFile ? videoFile.name : 'Choose file'}
-      </label>
-      <button className="btn btn-light ml-3 rounded-0" type="button" onClick={() => document.getElementById('customFileInput').click()} style={{ marginLeft: '20px' }}>
-        <div className="d-flex">
-          <i className="fa-solid fa-folder-open mt-1 px-1"></i> Browse
-        </div>
-      </button>
-    </div>
-   
-  
-  </div>
-  {videoUrl && <video src={videoUrl} controls height='270' width='350' className="img-thumbnail rounded-0" />}
-  <div className="mb-3">
-    <label className="form-label title">Frame number:</label>
-    {decoding.touched.frameNumber && decoding.errors.frameNumber ? (
-      <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">{decoding.errors.frameNumber}</div>
-    ) : null}
-    <input autoComplete='off' className="form-control rounded-0" type="number" name="frameNumber" onChange={decoding.handleChange} value={decoding.values.frameNumber} placeholder="Frame number" />
-   
-  </div>
-  <div className="mb-3">
-    <label className="form-label title">Key:</label>
-    {decoding.touched.key && decoding.errors.key ? (
-      <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">{decoding.errors.key}</div>
-    ) : null}
-    <input autoComplete='off' type='password' className="form-control rounded-0" name="key" onChange={decoding.handleChange} value={decoding.values.key} placeholder="Key" />
-    
-  </div>
-  {/* <button type="submit" className="btn btn-primary rounded-0">Decode Video</button> */}
-  {decodin ? (
-    <Spinner animation="border" role="status" style={{ color: 'blue', height: '40px', width: '40px' }}>
-      <span className="visually-hidden">Decoding...</span>
-    </Spinner>
-  ) : (
-    <button type="submit" className="btn btn-primary rounded-0">Decode </button>
-  )}
-</form>
-                      {decodedMessage && (
-                        <div className='mt-3'>
-                          <p className='title'>Decoded Message: </p>
-                          <div className="msg  p-2 border-black">
-                          {decodedMessage}
+    <div className='container mt-5 pb-4'>
+    <div className="card shadow-lg border-0">
+      <div className="card-body">
+        <h1 className="decoder-head">Video Decoder</h1>
+        <p className='mb-4 para'>Decode Your Message from a video!!</p>
+        <div className="row">
+          <div className="col-md-7">
+            <div className="container">
+              <div className="card border-0">
+                <div className="card-body form-card p-5">
+                  <form onSubmit={decoding.handleSubmit}>
+                    <div className="mb-3">
+                      <label className="form-label title">Select a Video:</label>
+                      {decoding.touched.video && decoding.errors.video ? (
+                        <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">{decoding.errors.video}</div>
+                      ) : null}
+                      <div className="d-flex align-items-center">
+                        <input type="file" id="customFileInput" accept="video/*" onChange={handleVideoChange} className="form-control rounded-0 d-none"/>
+                        <label className="form-control rounded-0 text-truncate" htmlFor="customFileInput">
+                          {videoFile ? videoFile.name : 'Choose file'}
+                        </label>
+                        <button className="btn btn-light ml-3 rounded-0" type="button" onClick={() => document.getElementById('customFileInput').click()} style={{ marginLeft: '20px' }}>
+                          <div className="d-flex">
+                            <i className="fa-solid fa-folder-open mt-1 px-1"></i> Browse
                           </div>
-                        </div>
-                      )}
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                    {videoUrl && <video src={videoUrl} controls height='270' width='350' className="img-thumbnail rounded-0" />}
+                    <div className="mb-3">
+                      <label className="form-label title">Frame number:</label>
+                      {decoding.touched.frameNumber && decoding.errors.frameNumber ? (
+                        <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">{decoding.errors.frameNumber}</div>
+                      ) : null}
+                      <input autoComplete='off' className="form-control rounded-0" type="number" name="frameNumber" onChange={decoding.handleChange} value={decoding.values.frameNumber} placeholder="Frame number" />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label title">Key:</label>
+                      {decoding.touched.key && decoding.errors.key ? (
+                        <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">{decoding.errors.key}</div>
+                      ) : null}
+                      <input autoComplete='off' type='password' className="form-control rounded-0" name="key" onChange={decoding.handleChange} value={decoding.values.key} placeholder="Key" />
+                    </div>
+                    {decodin ? (
+                      <Spinner animation="border" role="status" style={{ color: 'blue', height: '40px', width: '40px' }}>
+                        <span className="visually-hidden">Decoding...</span>
+                      </Spinner>
+                    ) : (
+                      <button type="submit" className="btn btn-primary rounded-0">Decode </button>
+                    )}
+                  </form>
+                  {decodedMessage && (
+                    <div className='mt-3'>
+                      <p className='title'>Decoded Message: </p>
+                      <div className="msg  p-2 border-black">
+                        {decodedMessage}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
-              <div className="col-md-5">
-                <div className="container">
-                  <div className="card border-0">
-                    <div className="card-body bg-info-subtle">
-                      <h1 className="decoder-head">Instructions</h1>
-                      <p className='mb-4 para'>Follow these steps to decode your message from a video file:</p>
-                      <ul>
-                        <li className='para text-start'>Select a video file from which you wish to decode your secret message.</li>
-                        <li className='para text-start'>Click on the 'Upload Video' button to upload the selected video.</li>
-                        <li className='para text-start'>Input the frame number where your message is embedded.</li>
-                        <li className='para text-start'>Input the cryptography key for the decoding process.</li>
-                        <li className='para text-start'>Click on the 'Decode' button.</li>
-                        <li className='para text-start'>The decoded message will be displayed below.</li>
-                      </ul>
-                    </div>
-                  </div>
+            </div>
+          </div>
+          <div className="col-md-5">
+            <div className="container">
+              <div className="card border-0">
+                <div className="card-body bg-info-subtle">
+                  <h1 className="decoder-head">Instructions</h1>
+                  <p className='mb-4 para'>Follow these steps to decode your message from a video file:</p>
+                  <ul>
+                    <li className='para text-start'>Select a video file from which you wish to decode your secret message.</li>
+                    <li className='para text-start'>Click on the 'Upload Video' button to upload the selected video.</li>
+                    <li className='para text-start'>Input the frame number where your message is embedded.</li>
+                    <li className='para text-start'>Input the cryptography key for the decoding process.</li>
+                    <li className='para text-start'>Click on the 'Decode' button.</li>
+                    <li className='para text-start'>The decoded message will be displayed below.</li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
     
   );
 };

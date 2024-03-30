@@ -61,16 +61,15 @@ const AudioDecoder = () => {
 
   return (
     <div className='container mt-5 pb-4'>
-      <div className="card shadow-lg border-0 ">
-        <div className="card-body">
-        <h1 className=" decoder-head">Audio Decoder</h1>
-                <p className='mb-4 para'>Decode Message hidden in an Audio file!!</p> 
-          <div className="row">
-            <div className="col-md-7 ">
-              <div className="container">
-             
-                <div className="card border-0">
-                  <div className="card-body form-card p-5">
+  <div className="card shadow-lg border-0 ">
+    <div className="card-body">
+      <h1 className=" decoder-head">Audio Decoder</h1>
+      <p className='mb-4 para'>Decode Message hidden in an Audio file!!</p>
+      <div className="row">
+        <div className="col-md-7 ">
+          <div className="container">
+            <div className="card border-0">
+              <div className="card-body form-card p-5">
                 <form className='form-group' onSubmit={decoding.handleSubmit}>
                   <div className="mb-3">
                     <label className="form-label title">Audio File:</label>
@@ -78,7 +77,7 @@ const AudioDecoder = () => {
                       <div className="alert alert-danger fw-bold text-danger p-2 rounded-0 mt-2">{decoding.errors.audio}</div>
                     )}
                     <div className="d-flex align-items-center">
-                      <input 
+                      <input
                         type="file"
                         name="audio"
                         onChange={handleAudioChange}
@@ -88,54 +87,52 @@ const AudioDecoder = () => {
                       <label className="form-control rounded-0" htmlFor="customFileInput">
                         {audioFile ? audioFile.name : 'Choose file'}
                       </label>
-                      <button className="btn btn-light rounded-0 ml-2" type="button" onClick={() => document.getElementById('customFileInput').click()} style={{marginLeft:'20px'}}>
-                      <div className="d-flex">
-                      <i className="fa-solid fa-folder-open  mt-1 px-1 "></i>  Browse
-                      </div>
+                      <button className="btn btn-light rounded-0 ml-2" type="button" onClick={() => document.getElementById('customFileInput').click()} style={{ marginLeft: '20px' }}>
+                        <div className="d-flex">
+                          <i className="fa-solid fa-folder-open  mt-1 px-1 "></i>  Browse
+                        </div>
                       </button>
                     </div>
-                   
                   </div>
                   {decodin ? (
-    <Spinner animation="border" role="status" style={{ color: 'blue', height: '40px', width: '40px' }}>
-      <span className="visually-hidden">Decoding...</span>
-    </Spinner>
-  ) : (
-    <button type="submit" className="btn btn-primary rounded-0">Decode</button>
-  )}
+                    <Spinner animation="border" role="status" style={{ color: 'blue', height: '40px', width: '40px' }}>
+                      <span className="visually-hidden">Decoding...</span>
+                    </Spinner>
+                  ) : (
+                    <button type="submit" className="btn btn-primary rounded-0">Decode</button>
+                  )}
                 </form>
                 {decodedMessage && (
                   <div className='mt-3'>
-                  <p className='title'>Decoded Message: </p>
-                  <div className="msg  p-2 border-black">
-                  {decodedMessage}
+                    <p className='title'>Decoded Message: </p>
+                    <div className="msg  p-2 border-black">
+                      {decodedMessage}
+                    </div>
                   </div>
-                 
-                </div>
                 )}
-                </div>
-                </div>
               </div>
             </div>
-            <div className="col-md-5">
-  <div className="container">
-    <div className="card border-0">
-      <div className="card-body bg-info-subtle">
-        <h1 className="decoder-head">Instructions</h1>
-        <p className='mb-4 para'>Follow these steps to decode your message from an audio file:</p>
-        <ul>
-          <li className='para text-start'>Select an audio file from which you wish to extract the secret message.</li>
-          <li className='para text-start'>Click on the 'Decode' button.</li>
-          <li className='para text-start'>The decoded message will be displayed below.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
+          </div>
+        </div>
+        <div className="col-md-5">
+          <div className="container">
+            <div className="card border-0">
+              <div className="card-body bg-info-subtle">
+                <h1 className="decoder-head">Instructions</h1>
+                <p className='mb-4 para'>Follow these steps to decode your message from an audio file:</p>
+                <ul>
+                  <li className='para text-start'>Select an audio file from which you wish to extract the secret message.</li>
+                  <li className='para text-start'>Click on the 'Decode' button.</li>
+                  <li className='para text-start'>The decoded message will be displayed below.</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</div>
   );
 };
 
