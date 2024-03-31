@@ -56,6 +56,7 @@ const AudioEncoder = () => {
         .then((data) => {
           setEncodedAudio(data.audio);
           encoding.resetForm();
+          setAudioFile(null);
         })
         .catch((error) => {
           console.error("Error:", error);

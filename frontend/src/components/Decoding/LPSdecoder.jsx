@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import './decoding.css';
 import toast from "react-hot-toast";
 import { Spinner } from "react-bootstrap";
+import Swal from 'sweetalert2';
 
 const ImageDecoder2 = () => {
   const [imageFile, setImageFile] = useState(null);
@@ -59,7 +60,18 @@ const ImageDecoder2 = () => {
         .then((response) => {
           if (response.status === 200) {
             toast.success("Decoded Successfully😊");
-          } else toast.error("Error Encountered😔");
+            setImageFile(null);
+            setImageUrl(null);
+          } else if (response.status === 500) {
+            toast.error("Error Encountered😔");
+            Swal.fire({
+              title: "Error",
+              text: "Invalid starting pixels. Please enter correct starting pixels.",
+              icon: "error",
+            });
+            return
+          }
+           else toast.error("Error Encountered😔");
           return response.text();
         })
         .then((data) => {

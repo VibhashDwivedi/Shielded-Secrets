@@ -69,6 +69,8 @@ const ImageEncoder2 = () => {
           setStartingPixel(data.startingPixel);
           console.log(data.startingPixel);
           encoding.resetForm();
+          setImageFile(null);
+          setImageUrl(null);
           console.log(data);
 
           Swal.fire({

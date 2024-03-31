@@ -39,6 +39,7 @@ const VideoEncoder = () => {
       if (response.status === 200) {
         toast.success("Video uploaded successfully");
         console.log(response.data);
+        setEncodedVideo(null)
         setTotalFrames(response.data.total_frames);
       } else {
         toast.error("Failed to upload video");
@@ -52,7 +53,9 @@ const VideoEncoder = () => {
   const postSchema = Yup.object().shape({
     data: Yup.string().required("Required"),
     key: Yup.string().required("Required"),
-    frameNumber: Yup.number().required("Required"),
+    frameNumber: Yup.number().required("Required")
+    .min(1, "Frame number cannot be less than 1")
+    .max(totalFrames, `Frame number cannot be more than ${totalFrames}`),
     video: Yup.mixed().required("Required"),
   });
 
@@ -86,6 +89,9 @@ const VideoEncoder = () => {
           toast.success("Encoded Successfully😊");
           setEncodedVideo(response.data.video);
           encoding.resetForm();
+          setVideoFile(null);
+          setVideoUrl(null);
+          setTotalFrames(null);
         } else {
           toast.error("Error Encountered😔");
         }
@@ -225,11 +231,11 @@ const VideoEncoder = () => {
                           name="data"
                           onChange={encoding.handleChange}
                           value={encoding.values.data}
-                          placeholder="Data"
+                          placeholder="Secret Message"
                         />
                       </div>
                       <div className="mb-3">
-                        <label className="form-label title">Key:</label>
+                        <label className="form-label title">Generate Key:</label>
                         {encoding.touched.key && encoding.errors.key && (
                           <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">
                             {encoding.errors.key}

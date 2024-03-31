@@ -59,6 +59,7 @@ const TextEncoder = () => {
           setStegoFile(data.text);
           setStegoFileName(data.filename);
           encoding.resetForm();
+          setTextFile(null);
           console.log(data);
         })
         .catch((error) => {

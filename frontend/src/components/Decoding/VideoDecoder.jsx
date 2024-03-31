@@ -68,11 +68,15 @@ const VideoDecoder = () => {
           }
         });
 
+        
+
         if (response.status === 200) {
           console.log('Video decoded successfully');
           toast.success('Decoded Successfully😊')
           setDecodedMessage(response.data.decoded_msg);
           decoding.resetForm();
+          setVideoFile(null);
+          setVideoUrl(null);
         } else {
           console.log('Failed to decode video');
           toast.error('Error Encountered😔')
@@ -159,7 +163,6 @@ const VideoDecoder = () => {
                   <p className='mb-4 para'>Follow these steps to decode your message from a video file:</p>
                   <ul>
                     <li className='para text-start'>Select a video file from which you wish to decode your secret message.</li>
-                    <li className='para text-start'>Click on the 'Upload Video' button to upload the selected video.</li>
                     <li className='para text-start'>Input the frame number where your message is embedded.</li>
                     <li className='para text-start'>Input the cryptography key for the decoding process.</li>
                     <li className='para text-start'>Click on the 'Decode' button.</li>

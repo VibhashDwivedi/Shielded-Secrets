@@ -8,6 +8,9 @@ import cv2
 
 image_stegano = Blueprint('image_stegano', __name__)
 
+
+
+
 def msgtobinary(msg):
     if type(msg) == str:
         result= ''.join([ format(ord(i), "08b") for i in msg ])

@@ -43,6 +43,7 @@ const AudioDecoder = () => {
       .then(response =>{ 
         if(response.status === 200){
           toast.success('Decoded Successfully😊')
+         setAudioFile(null) 
         }
         else
           toast.error('Error Encountered😔')

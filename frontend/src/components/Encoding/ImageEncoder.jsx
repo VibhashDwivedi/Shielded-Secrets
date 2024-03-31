@@ -65,6 +65,8 @@ const ImageEncoder = () => {
         .then((data) => {
           setEncodedImage(data.image);
           encoding.resetForm();
+          setImageFile(null);
+          setImageUrl(null);
           console.log(data);
         })
         .catch((error) => {

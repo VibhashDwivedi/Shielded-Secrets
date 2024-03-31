@@ -51,7 +51,12 @@ const ImageDecoder = () => {
         .then((response) => {
           if (response.status === 200) {
             toast.success("Decoded Successfully😊");
-          } else toast.error("Error Encountered😔");
+            setImageFile(null);
+            setImageUrl(null);
+          } else
+          { toast.error("Error Encountered😔");
+          return;
+        }
           return response.text();
         })
         .then((data) => {
