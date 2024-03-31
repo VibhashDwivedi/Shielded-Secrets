@@ -16,6 +16,7 @@ const AudioEncoder = () => {
   };
 
   const audioSchema = Yup.object().shape({
+    key: Yup.string().required("Required"),
     audio: Yup.mixed()
       .required("Required")
       .test(
@@ -36,11 +37,13 @@ const AudioEncoder = () => {
     initialValues: {
       audio: "",
       secret: "",
+      key: "",
     },
     onSubmit: async (values) => {
       let formData = new FormData();
       formData.append("audio", audioFile);
       formData.append("secret", values.secret);
+      formData.append("key", values.key);
 
       setEncodin(true);
       const res = await fetch("http://localhost:5000/encode_audio", {
@@ -152,7 +155,25 @@ const AudioEncoder = () => {
                           autoComplete="off"
                         />
                       </div>
-
+                      <div className="mb-3">
+                        <label className="form-label title">
+                          Generate Key:
+                        </label>
+                        {encoding.touched.key && encoding.errors.key && (
+                          <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">
+                            {encoding.errors.key}
+                          </div>
+                        )}
+                        <input
+                          type="password"
+                          autoComplete="off"
+                          className="form-control rounded-0"
+                          name="key"
+                          onChange={encoding.handleChange}
+                          value={encoding.values.key}
+                          placeholder="Key"
+                        />
+                      </div>
                       {encodin ? (
                         <Spinner
                           animation="border"

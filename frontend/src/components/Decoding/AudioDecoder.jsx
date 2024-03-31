@@ -16,6 +16,7 @@ const AudioDecoder = () => {
   };
 
   const audioSchema = Yup.object().shape({
+    key: Yup.string().required('Required'),
     audio: Yup.mixed()
     .required('Required')
     .test('fileFormat', 'Unsupported format. Please select an WAV audio file.', value => {
@@ -29,12 +30,13 @@ const AudioDecoder = () => {
 
   const decoding = useFormik({
     initialValues: {
-      audio: ''
+      audio: '',
+      key: ''
     },
     onSubmit: async values => {
       let formData = new FormData();
       formData.append('audio', audioFile);
-
+      formData.append('key', values.key);
       setDecodin(true);
       const res = await fetch('http://localhost:5000/decode_audio', {
         method: 'POST',
@@ -95,6 +97,13 @@ const AudioDecoder = () => {
                       </button>
                     </div>
                   </div>
+                  <div className="mb-3">
+                      <label className="form-label title">Key:</label>
+                      {decoding.touched.key && decoding.errors.key ? (
+                        <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">{decoding.errors.key}</div>
+                      ) : null}
+                      <input autoComplete='off' type='password' className="form-control rounded-0" name="key" onChange={decoding.handleChange} value={decoding.values.key} placeholder="Key" />
+                    </div>
                   {decodin ? (
                     <Spinner animation="border" role="status" style={{ color: 'blue', height: '40px', width: '40px' }}>
                       <span className="visually-hidden">Decoding...</span>

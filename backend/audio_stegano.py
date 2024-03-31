@@ -5,12 +5,13 @@ import base64
 import os
 import wave
 
+from crypto import encryption, decryption
 
 audio_stegano = Blueprint('audio_stegano', __name__)
 
-def encode_aud_data(data, audio_file):
+def encode_aud_data(data, audio_file, key):
     
-
+    data = encryption(data, key)
     nameoffile=audio_file
     song = wave.open(nameoffile, mode='rb')
 
@@ -52,7 +53,7 @@ def encode_aud_data(data, audio_file):
     print("\nEncoded the data successfully in the audio file.")    
     song.close()
 
-def decode_aud_data(song):
+def decode_aud_data(song, key):
     
 
     
@@ -79,9 +80,12 @@ def decode_aud_data(song):
             decoded_data += chr(int(byte, 2))
             if decoded_data[-5:] == "*^*^*":
                 #print("The Encoded data was :--",decoded_data[:-5])
-                return decoded_data[:-5]
-                p=1
-                break  
+                ciphertext =  decoded_data[:-5]
+                print(ciphertext)
+                print(key)
+                decoded_data = decryption(ciphertext, key)
+                return decoded_data
+                  
 
 
 
@@ -89,6 +93,7 @@ def decode_aud_data(song):
 def encode_audio():
     audio_file = request.files['audio']
     data = request.form['secret']
+    key = request.form['key']
     filename = secure_filename(audio_file.filename)
     directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Sample_cover_files')
     if not os.path.exists(directory):
@@ -96,7 +101,7 @@ def encode_audio():
     save_path = os.path.join(directory, filename)
     audio_file.save(save_path)
     # song = wave.open(save_path, mode='rb')
-    encode_aud_data(data, save_path)
+    encode_aud_data(data, save_path, key)
     with open('stego_audio.wav', "rb") as audio_file:  # Open the encoded audio file
       audio_string = base64.b64encode(audio_file.read()).decode('utf-8')
     return {'audio': 'data:audio/wav;base64,' + audio_string}  # Return the encoded audio as a base64 string
@@ -108,6 +113,7 @@ def encode_audio():
 @audio_stegano.route('/decode_audio', methods=['POST'])
 def decode_audio():
     audio_file = request.files['audio']
+    key = request.form['key']
     filename = secure_filename(audio_file.filename)
     directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Sample_stego_files')
     if not os.path.exists(directory):
@@ -115,7 +121,7 @@ def decode_audio():
     save_path = os.path.join(directory, filename)
     audio_file.save(save_path)
     song = wave.open(save_path, mode='rb')
-    data = decode_aud_data(song)
+    data = decode_aud_data(song, key)
     
     return data
 

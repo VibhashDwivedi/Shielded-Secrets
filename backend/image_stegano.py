@@ -6,9 +6,9 @@ import numpy as np
 import os
 import cv2
 
+from crypto import encryption, decryption
+
 image_stegano = Blueprint('image_stegano', __name__)
-
-
 
 
 def msgtobinary(msg):
@@ -27,7 +27,8 @@ def msgtobinary(msg):
     return result
 
 
-def encode_img_data( data, stego_image):
+def encode_img_data( data, stego_image, key='123'):
+    data = encryption(data, key)
     img=cv2.imread(stego_image)
     #data=input("\nEnter the data to be Encoded in Image :")    
     if (len(data) == 0): 
@@ -72,7 +73,8 @@ def encode_img_data( data, stego_image):
     cv2.imwrite( nameoffile, img)
     print("\nEncoded the data successfully in the Image and the image is successfully saved with name ",nameoffile)
 
-def decode_img_data(img):
+def decode_img_data(img, key):
+    print("key" + key)
     data_binary = ""
     for i in img:
         for pixel in i:
@@ -86,7 +88,11 @@ def decode_img_data(img):
                 decoded_data += chr(int(byte, 2))
                 if decoded_data[-5:] == "*^*^*": 
                     #print("\n\nThe Encoded data which was hidden in the Image was :--  ",decoded_data[:-5])
-                    return  decoded_data[:-5]
+                    ciphertext =  decoded_data[:-5]
+                    print(ciphertext)
+                    print(key)
+                    decoded_data = decryption(ciphertext, key)
+                    return decoded_data
                 
 
 
@@ -94,13 +100,14 @@ def decode_img_data(img):
 def encode():
     stego_image = request.files['image']
     data = request.form['secret']
+    key = request.form['key']
     filename = secure_filename(stego_image.filename)
     directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Sample_cover_files')
     if not os.path.exists(directory):
         os.makedirs(directory)
     save_path = os.path.join(directory, filename)
     stego_image.save(save_path)
-    encode_img_data(data, save_path)
+    encode_img_data(data, save_path, key)
     with open('stego_image.png', "rb") as img_file:  # Open the encoded image file
         img_string = base64.b64encode(img_file.read()).decode('utf-8')
     return {'image': 'data:image/png;base64,' + img_string} # Return the encoded image as a base64 string
@@ -111,6 +118,7 @@ def encode():
 @image_stegano.route('/decode_img',  methods=['POST']  )
 def decode():
     stego_image = request.files['image']
+    key = request.form['key']
     filename = secure_filename(stego_image.filename)
     directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Sample_stego_files')
     if not os.path.exists(directory):
@@ -118,7 +126,8 @@ def decode():
     save_path = os.path.join(directory, filename)
     stego_image.save(save_path)
     img = cv2.imread(save_path)
-    data = decode_img_data(img)
+    print(key)
+    data = decode_img_data(img, key)
     return data
 
 

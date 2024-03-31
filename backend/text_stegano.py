@@ -4,13 +4,16 @@ from werkzeug.utils import secure_filename
 import base64
 import os
 
+from crypto import encryption, decryption
+
 text_stegano = Blueprint('text_stegano', __name__)
 
 def BinaryToDecimal(binary):
     string = int(binary, 2)
     return string
 
-def txt_encode(text, text_file):
+def txt_encode(text, text_file, key):
+    text = encryption(text, key)
     l=len(text)
     i=0
     add=''
@@ -63,7 +66,7 @@ def txt_encode(text, text_file):
     file1.close()
     print("\nStego file has successfully generated")
 
-def txt_decode(text_file):
+def txt_decode(text_file, key):
     ZWC_reverse={u'\u200C':"00",u'\u202C':"01",u'\u202D':"11",u'\u200E':"10"}
     
     stego=text_file
@@ -103,7 +106,7 @@ def txt_decode(text_file):
         elif(t3=='0011'):
             decimal_data = BinaryToDecimal(t4)
             final+=chr((decimal_data ^ 170) - 48)
-    
+    final = decryption(final, key)
     return final
 
 
@@ -112,6 +115,7 @@ def txt_decode(text_file):
 @text_stegano.route('/encode_text', methods=['POST'])
 def encode_txt_data():
     txt_file = request.files['file']
+    key = request.form['key']
     filename = secure_filename(txt_file.filename)
     directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Sample_cover_files')
     if not os.path.exists(directory):
@@ -119,7 +123,7 @@ def encode_txt_data():
     save_path = os.path.join(directory, filename)
     txt_file.save(save_path)
     text1 = request.form['secretMessage']
-    txt_encode(text1, save_path)
+    txt_encode(text1, save_path, key)
     with open('stego_text.txt', "rb") as text_file:  # Open the encoded text file
         text_string = base64.b64encode(text_file.read()).decode('utf-8')
     return {'text': 'data:text/plain;base64,' + text_string, 'filename': 'stego_text.txt'}  # Return the encoded text as a base64 string
@@ -127,11 +131,12 @@ def encode_txt_data():
 @text_stegano.route('/decode_text', methods=['POST'])
 def decode_txt_data():
     stego_text = request.files['file']
+    key = request.form['key']
     filename = secure_filename(stego_text.filename)
     directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Sample_stego_files')
     if not os.path.exists(directory):
         os.makedirs(directory)
     save_path = os.path.join(directory, filename)
     stego_text.save(save_path)
-    text = txt_decode(save_path)
+    text = txt_decode(save_path, key)
     return text

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import './decoding.css';
+import "./decoding.css";
 import toast from "react-hot-toast";
 import { Spinner } from "react-bootstrap";
 
@@ -16,6 +16,7 @@ const TextDecoder = () => {
   };
 
   const textSchema = Yup.object().shape({
+    key: Yup.string().required("Required"),
     file: Yup.mixed()
       .required("Required")
       .test(
@@ -35,10 +36,12 @@ const TextDecoder = () => {
   const decoding = useFormik({
     initialValues: {
       file: "",
+      key: "",
     },
     onSubmit: async (values) => {
       let formData = new FormData();
       formData.append("file", textFile);
+      formData.append("key", values.key);
 
       setDecodin(true);
       const res = await fetch("http://localhost:5000/decode_text", {
@@ -114,6 +117,23 @@ const TextDecoder = () => {
                             </div>
                           </button>
                         </div>
+                      </div>
+                      <div className="mb-3">
+                        <label className="form-label title">Key:</label>
+                        {decoding.touched.key && decoding.errors.key ? (
+                          <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">
+                            {decoding.errors.key}
+                          </div>
+                        ) : null}
+                        <input
+                          autoComplete="off"
+                          type="password"
+                          className="form-control rounded-0"
+                          name="key"
+                          onChange={decoding.handleChange}
+                          value={decoding.values.key}
+                          placeholder="Key"
+                        />
                       </div>
                       {decodin ? (
                         <Spinner

@@ -19,6 +19,7 @@ const ImageDecoder = () => {
   };
 
   const imageSchema = Yup.object().shape({
+    key: Yup.string().required('Required'),
     image: Yup.mixed()
       .required("Required")
       .test(
@@ -37,11 +38,12 @@ const ImageDecoder = () => {
   const decoding = useFormik({
     initialValues: {
       image: "",
+      key: "",
     },
     onSubmit: async (values) => {
       let formData = new FormData();
       formData.append("image", imageFile);
-
+      formData.append("key", values.key);
       setDecodin(true);
 
       const res = await fetch("http://localhost:5000/decode_img", {
@@ -131,6 +133,13 @@ const ImageDecoder = () => {
                           className="img-thumbnail mb-3 rounded-0 border-0"
                         />
                       )}
+                       <div className="mb-3">
+                      <label className="form-label title">Key:</label>
+                      {decoding.touched.key && decoding.errors.key ? (
+                        <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">{decoding.errors.key}</div>
+                      ) : null}
+                      <input autoComplete='off' type='password' className="form-control rounded-0" name="key" onChange={decoding.handleChange} value={decoding.values.key} placeholder="Key" />
+                    </div>
                       <div>
                         {decodin ? (
                           <Spinner
