@@ -102,9 +102,7 @@ def encode_audio():
     return {'audio': 'data:audio/wav;base64,' + audio_string}  # Return the encoded audio as a base64 string
 
 
-#receive image from user
 
-#decode router receives image from user and returns the decoded message
 
 
 @audio_stegano.route('/decode_audio', methods=['POST'])

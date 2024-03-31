@@ -1,19 +1,21 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import AudioDecoder from "./components/Decoding/audioSteganoD/AudioDecoder";
-import ImageDecoder from "./components/Decoding/imageSteganoD/ImageDecoder";
-import TextDecoder from "./components/Decoding/textSteganoD/TextDecoder";
-import AudioEncoder from "./components/Encoding/AudioSteganoE/AudioEncoder";
-import ImageEncoder from "./components/Encoding/ImageSteganoE/ImageEncoder";
-import TextEncoder from "./components/Encoding/TextSteganoE/TextEncoder";
-import Navbar from "./components/Navbar/Navbar";
 import "./App.css";
+import AudioDecoder from "./components/Decoding/AudioDecoder";
+import ImageDecoder from "./components/Decoding/ImageDecoder";
+import TextDecoder from "./components/Decoding/TextDecoder";
+import AudioEncoder from "./components/Encoding/AudioEncoder";
+import ImageEncoder from "./components/Encoding/ImageEncoder";
+import TextEncoder from "./components/Encoding/TextEncoder";
+import Navbar from "./components/Navbar/Navbar";
 import Home from "./components/pages/Home/Home";
 import Encoder from "./components/pages/Encoder/Encoder";
 import Decoder from "./components/pages/Decoder/Decoder";
 import About from "./components/pages/About/About";
-import VideoEncoder from "./components/Encoding/VideoSteganoE/VideoEncoder";
-import VideoDecoder from "./components/Decoding/videoSteganoD/VideoDecoder";
+import VideoEncoder from "./components/Encoding/VideoEncoder";
+import VideoDecoder from "./components/Decoding/VideoDecoder";
+import ImageEncoder2 from "./components/Encoding/ImageEncoder2";
+import ImageDecoder2 from "./components/Decoding/imageDecode2";
 
 function App() {
   return (
@@ -23,6 +25,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/encoder" element={<Encoder />} />
           <Route path="/decoder" element={<Decoder />} />
           <Route path="/about" element={<About />} />
@@ -34,6 +37,9 @@ function App() {
           <Route path="/text-decoder" element={<TextDecoder />} />
           <Route path="/video-encoder" element={<VideoEncoder />} />
           <Route path="/video-decoder" element={<VideoDecoder />} />
+          <Route path='/lps' element={<ImageEncoder2/>} />
+          <Route path='/lps-decode' element={<ImageDecoder2/>} />
+          <Route path="*" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </div>

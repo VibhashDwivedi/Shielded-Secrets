@@ -69,21 +69,6 @@ def encode_img_data( data, stego_image):
     cv2.imwrite( nameoffile, img)
     print("\nEncoded the data successfully in the Image and the image is successfully saved with name ",nameoffile)
 
-@image_stegano.route('/encode_img', methods=['POST'])
-def encode():
-    stego_image = request.files['image']
-    data = request.form['secret']
-    filename = secure_filename(stego_image.filename)
-    directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Sample_cover_files')
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-    save_path = os.path.join(directory, filename)
-    stego_image.save(save_path)
-    encode_img_data(data, save_path)
-    with open('stego_image.png', "rb") as img_file:  # Open the encoded image file
-        img_string = base64.b64encode(img_file.read()).decode('utf-8')
-    return {'image': 'data:image/png;base64,' + img_string} # Return the encoded image as a base64 string
-
 def decode_img_data(img):
     data_binary = ""
     for i in img:
@@ -102,9 +87,22 @@ def decode_img_data(img):
                 
 
 
-#receive image from user
+@image_stegano.route('/encode_img', methods=['POST'])
+def encode():
+    stego_image = request.files['image']
+    data = request.form['secret']
+    filename = secure_filename(stego_image.filename)
+    directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Sample_cover_files')
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    save_path = os.path.join(directory, filename)
+    stego_image.save(save_path)
+    encode_img_data(data, save_path)
+    with open('stego_image.png', "rb") as img_file:  # Open the encoded image file
+        img_string = base64.b64encode(img_file.read()).decode('utf-8')
+    return {'image': 'data:image/png;base64,' + img_string} # Return the encoded image as a base64 string
 
-#decode router receives image from user and returns the decoded message
+
 
 
 @image_stegano.route('/decode_img',  methods=['POST']  )

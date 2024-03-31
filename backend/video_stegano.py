@@ -1,17 +1,16 @@
-from flask import Blueprint, request, jsonify, send_from_directory
+from flask import Blueprint, request, send_from_directory
 from werkzeug.utils import secure_filename
-import base64
+
 import os
+import cv2
+import numpy as np
+
 
 video_stegano = Blueprint('video_stegano', __name__)
 
 UPLOAD_FOLDER = 'Sample_cover_files'
-
-
-from flask import Flask, request
-import cv2
-import numpy as np
-import os
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 
 def msgtobinary(msg):

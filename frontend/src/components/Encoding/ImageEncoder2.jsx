@@ -1,51 +1,59 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import "./textEncoder.css";
-import toast from "react-hot-toast";
+import "./encoding.css";
+import { toast } from "react-hot-toast";
+import Swal from "sweetalert2";
 import Spinner from "react-bootstrap/Spinner";
 
-const TextEncoder = () => {
-  const [textFile, setTextFile] = useState(null);
-  const [stegoFile, setStegoFile] = useState(null);
-  const [stegoFileName, setStegoFileName] = useState("");
+const ImageEncoder2 = () => {
+  const [imageFile, setImageFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+  const [encodedImage, setEncodedImage] = useState(null);
+  const [startingPixel, setStartingPixel] = useState(null)
   const [encodin, setEncodin] = useState(false);
 
-  const handleFileChange = (event) => {
-    setTextFile(event.target.files[0]);
-    encoding.setFieldValue("file", event.currentTarget.files[0]);
+  const handleImageChange = (event) => {
+    setImageFile(event.target.files[0]);
+    encoding.setFieldValue("image", event.currentTarget.files[0]);
+    setImageUrl(URL.createObjectURL(event.target.files[0]));
   };
 
-  const textSchema = Yup.object().shape({
-    file: Yup.mixed()
+  const postSchema = Yup.object().shape({
+    secret: Yup.string().required("Required"),
+    image: Yup.mixed()
       .required("Required")
       .test(
         "fileFormat",
-        "Unsupported Format, only .txt files are supported",
+        "Unsupported format. Please select an image file.",
         (value) => {
           if (value) {
-            const supportedFormats = [".txt"];
-            const currentFormat = "." + value.name.split(".").pop();
-            return supportedFormats.includes(currentFormat);
+            const supportedFormats = [
+              "image/jpeg",
+              "image/jpg",
+              "image/png",
+              "image/webp",
+            ];
+            return supportedFormats.includes(value.type);
           }
           return true;
         }
       ),
-    secretMessage: Yup.string().required("Required"),
   });
 
   const encoding = useFormik({
     initialValues: {
-      file: "",
-      secretMessage: "",
+      secret: "",
+      image: "",
     },
     onSubmit: async (values) => {
       let formData = new FormData();
-      formData.append("file", textFile);
-      formData.append("secretMessage", values.secretMessage);
+      formData.append("image", imageFile);
+      formData.append("secret", values.secret);
 
       setEncodin(true);
-      const res = await fetch("http://localhost:5000/encode_text", {
+
+      const res = await fetch("http://localhost:5000/encode-lps", {
         method: "POST",
         body: formData,
       })
@@ -56,58 +64,67 @@ const TextEncoder = () => {
           return response.json();
         })
         .then((data) => {
-          setStegoFile(data.text);
-          setStegoFileName(data.filename);
+          setEncodedImage(data.image);
+          setStartingPixel(data.startingPixel);
+          console.log(data.startingPixel);
           encoding.resetForm();
           console.log(data);
+
+          Swal.fire({
+            title: 'Starting Pixel',
+            text: `The starting pixel is (${data.startingPixel})`,
+            icon: 'success',
+          });
         })
         .catch((error) => {
-          console.error("Error:", error);
+          // console.error('Error:', error);
           toast.error("Error Encountered😔");
         });
       setEncodin(false);
     },
-    validationSchema: textSchema,
+    validationSchema: postSchema,
   });
 
   return (
     <div className="container mt-5 pb-4">
       <div className="card shadow-lg border-0 ">
-        <div className="card-body">
-          <h1 className=" encoder-head">Text Encoder</h1>
-          <p className="mb-4 para">Encode Your Message in a text file!!</p>
+        <div className="card-body ">
+          <h1 className=" encoder-head">Image Encoder 2</h1>
+          <p className="mb-4 para">Encode Your Message in an Image!!</p>
           <div className="row">
             <div className="col-md-7 ">
               <div className="container">
                 <div className="card border-0">
-                  <div className="card-body p-5 form-card">
+                  <div className="card-body form-card p-5">
                     <form
                       className="form-group"
                       onSubmit={encoding.handleSubmit}
                     >
                       <div className="mb-3">
-                        <label className="form-label title">Text File:</label>
-                        {encoding.touched.file && encoding.errors.file && (
+                        <label className="form-label title">
+                          Select an Image:
+                        </label>
+                        {encoding.touched.image && encoding.errors.image && (
                           <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">
-                            {encoding.errors.file}
+                            {encoding.errors.image}
                           </div>
                         )}
                         <div className="d-flex align-items-center">
                           <input
                             type="file"
-                            name="file"
-                            onChange={handleFileChange}
-                            className="form-control d-none"
+                            name="image"
+                            onChange={handleImageChange}
+                            className="form-control d-none w-25 "
                             id="customFileInput"
                           />
                           <label
                             className="form-control rounded-0"
                             htmlFor="customFileInput"
                           >
-                            {textFile ? textFile.name : "Choose file"}
+                            {imageFile ? imageFile.name : "Choose file"}
                           </label>
                           <button
-                            className="btn btn-light ml-2 rounded-0"
+                            className="btn btn-light ml-3 rounded-0"
                             type="button"
                             onClick={() =>
                               document.getElementById("customFileInput").click()
@@ -121,23 +138,31 @@ const TextEncoder = () => {
                           </button>
                         </div>
                       </div>
+                      {imageUrl && (
+                        <img
+                          src={imageUrl}
+                          alt="Uploaded"
+                          height="270"
+                          width="350"
+                          className="img-thumbnail mb-3 rounded-0 border-0"
+                        />
+                      )}
                       <div className="mb-3">
                         <label className="form-label title">
                           Secret Message:
                         </label>
-                        {encoding.touched.secretMessage &&
-                          encoding.errors.secretMessage && (
-                            <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">
-                              {encoding.errors.secretMessage}
-                            </div>
-                          )}
+                        {encoding.touched.secret && encoding.errors.secret && (
+                          <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">
+                            {encoding.errors.secret}
+                          </div>
+                        )}
                         <input
                           type="text"
-                          name="secretMessage"
+                          name="secret"
                           onChange={encoding.handleChange}
-                          value={encoding.values.secretMessage}
+                          value={encoding.values.secret}
                           className="form-control rounded-0"
-                          placeholder="Secret Message Here..."
+                          placeholder="Secret Message here..."
                           autoComplete="off"
                         />
                       </div>
@@ -163,18 +188,30 @@ const TextEncoder = () => {
                       )}
                     </form>
 
-                    {stegoFile && (
-                      <div className="mt-3">
-                        <label className="form-label title mt-3">
-                          Encoded File:
+                    {encodedImage && (
+                      <div className="d-block">
+                        {/* put a label as encoded image */}
+                        <label className="form-label title mt-2">
+                          Encoded Image:
                         </label>
-                        <a
-                          href={stegoFile}
-                          download={stegoFileName}
-                          className="btn btn-primary rounded-0 mx-3"
-                        >
-                          {stegoFileName}
-                        </a>
+                        <div>
+                          <img
+                            src={encodedImage}
+                            alt="Encoded"
+                            height="270"
+                            width="350"
+                            className="img-thumbnail  rounded-0"
+                          />
+                        </div>
+                        <div>
+                          <a
+                            href={encodedImage}
+                            download="encoded_image.png"
+                            className="btn btn-primary rounded-0 mt-2"
+                          >
+                            Download
+                          </a>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -187,22 +224,23 @@ const TextEncoder = () => {
                   <div className="card-body bg-info-subtle">
                     <h1 className="encoder-head">Instructions</h1>
                     <p className="mb-4 para">
-                      Follow these steps to encode your message in a text file:
+                      Follow these steps to encode your message in an image
+                      file:
                     </p>
                     <ul>
                       <li className="para text-start">
-                        Select a text file into which you wish to embed your
+                        Select an image file into which you wish to embed your
                         secret message.
                       </li>
                       <li className="para text-start">
                         Input the confidential message that you wish to embed
-                        within the text file.
+                        within the image file.
                       </li>
                       <li className="para text-start">
                         Click on the 'Encode' button.
                       </li>
                       <li className="para text-start">
-                        The encoded text will be displayed below.
+                        The encoded image will be displayed below.
                       </li>
                     </ul>
                   </div>
@@ -216,4 +254,4 @@ const TextEncoder = () => {
   );
 };
 
-export default TextEncoder;
+export default ImageEncoder2;

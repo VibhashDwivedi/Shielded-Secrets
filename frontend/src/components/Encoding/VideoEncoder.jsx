@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import "./videoEncoder.css";
+import "./encoding.css";
 import Spinner from "react-bootstrap/Spinner";
 
 const VideoEncoder = () => {

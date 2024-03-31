@@ -1,32 +1,31 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import "./imageDecoder.css";
+import './decoding.css';
 import toast from "react-hot-toast";
 import { Spinner } from "react-bootstrap";
 
-const ImageDecoder = () => {
-  const [imageFile, setImageFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
+const TextDecoder = () => {
+  const [textFile, setTextFile] = useState(null);
   const [decodedMessage, setDecodedMessage] = useState("");
   const [decodin, setDecodin] = useState(false);
 
-  const handleImageChange = (event) => {
-    setImageFile(event.target.files[0]);
-    setImageUrl(URL.createObjectURL(event.target.files[0]));
-    decoding.setFieldValue("image", event.currentTarget.files[0]);
+  const handleFileChange = (event) => {
+    setTextFile(event.target.files[0]);
+    decoding.setFieldValue("file", event.currentTarget.files[0]);
   };
 
-  const imageSchema = Yup.object().shape({
-    image: Yup.mixed()
+  const textSchema = Yup.object().shape({
+    file: Yup.mixed()
       .required("Required")
       .test(
         "fileFormat",
-        "Unsupported format. Please select a PNG image file.",
+        "Unsupported Format, only .txt files are supported",
         (value) => {
           if (value) {
-            const supportedFormats = ["image/png"];
-            return supportedFormats.includes(value.type);
+            const supportedFormats = [".txt"];
+            const currentFormat = "." + value.name.split(".").pop();
+            return supportedFormats.includes(currentFormat);
           }
           return true;
         }
@@ -35,15 +34,14 @@ const ImageDecoder = () => {
 
   const decoding = useFormik({
     initialValues: {
-      image: "",
+      file: "",
     },
     onSubmit: async (values) => {
       let formData = new FormData();
-      formData.append("image", imageFile);
+      formData.append("file", textFile);
 
       setDecodin(true);
-
-      const res = await fetch("http://localhost:5000/decode_img", {
+      const res = await fetch("http://localhost:5000/decode_text", {
         method: "POST",
         body: formData,
       })
@@ -62,15 +60,15 @@ const ImageDecoder = () => {
         });
       setDecodin(false);
     },
-    validationSchema: imageSchema,
+    validationSchema: textSchema,
   });
 
   return (
     <div className="container mt-5 pb-4">
       <div className="card shadow-lg border-0 ">
         <div className="card-body">
-          <h1 className=" decoder-head">Image Decoder</h1>
-          <p className="mb-4 para">Decode Message hidden in an Image!!</p>
+          <h1 className=" decoder-head">Text Decoder</h1>
+          <p className="mb-4 para">Decode Message hidden in an Text file!!</p>
           <div className="row">
             <div className="col-md-7 ">
               <div className="container">
@@ -81,17 +79,17 @@ const ImageDecoder = () => {
                       onSubmit={decoding.handleSubmit}
                     >
                       <div className="mb-3">
-                        <label className="form-label title">Image File:</label>
-                        {decoding.touched.image && decoding.errors.image && (
-                          <div className="alert alert-danger mt-2 p-2 rounded-0 fw-bold text-danger">
-                            {decoding.errors.image}
+                        <label className="form-label title">Text File:</label>
+                        {decoding.touched.file && decoding.errors.file && (
+                          <div className="alert alert-danger p-2 rounded-0 mt-2 text-danger fw-bold">
+                            {decoding.errors.file}
                           </div>
                         )}
                         <div className="d-flex align-items-center">
                           <input
                             type="file"
-                            name="image"
-                            onChange={handleImageChange}
+                            name="file"
+                            onChange={handleFileChange}
                             className="form-control d-none"
                             id="customFileInput"
                           />
@@ -99,10 +97,10 @@ const ImageDecoder = () => {
                             className="form-control rounded-0"
                             htmlFor="customFileInput"
                           >
-                            {imageFile ? imageFile.name : "Choose file"}
+                            {textFile ? textFile.name : "Choose file"}
                           </label>
                           <button
-                            className="btn btn-light ml-2 rounded-0"
+                            className="btn btn-light  ml-2"
                             type="button"
                             onClick={() =>
                               document.getElementById("customFileInput").click()
@@ -116,37 +114,26 @@ const ImageDecoder = () => {
                           </button>
                         </div>
                       </div>
-                      {imageUrl && (
-                        <img
-                          src={imageUrl}
-                          alt="Uploaded"
-                          height="270"
-                          width="350"
-                          className="img-thumbnail mb-3 rounded-0 border-0"
-                        />
+                      {decodin ? (
+                        <Spinner
+                          animation="border"
+                          role="status"
+                          style={{
+                            color: "blue",
+                            height: "40px",
+                            width: "40px",
+                          }}
+                        >
+                          <span className="visually-hidden">Decoding...</span>
+                        </Spinner>
+                      ) : (
+                        <button
+                          type="submit"
+                          className="btn btn-primary rounded-0"
+                        >
+                          Decode
+                        </button>
                       )}
-                      <div>
-                        {decodin ? (
-                          <Spinner
-                            animation="border"
-                            role="status"
-                            style={{
-                              color: "blue",
-                              height: "40px",
-                              width: "40px",
-                            }}
-                          >
-                            <span className="visually-hidden">Decoding...</span>
-                          </Spinner>
-                        ) : (
-                          <button
-                            type="submit"
-                            className="btn btn-primary rounded-0"
-                          >
-                            Decode
-                          </button>
-                        )}
-                      </div>
                     </form>
                     {decodedMessage && (
                       <div className="mt-3">
@@ -166,12 +153,12 @@ const ImageDecoder = () => {
                   <div className="card-body bg-info-subtle">
                     <h1 className="decoder-head">Instructions</h1>
                     <p className="mb-4 para">
-                      Follow these steps to decode your message from an image
+                      Follow these steps to decode your message from a text
                       file:
                     </p>
                     <ul>
                       <li className="para text-start">
-                        Select an image file from which you wish to extract the
+                        Select a text file from which you wish to extract the
                         secret message.
                       </li>
                       <li className="para text-start">
@@ -192,4 +179,4 @@ const ImageDecoder = () => {
   );
 };
 
-export default ImageDecoder;
+export default TextDecoder;

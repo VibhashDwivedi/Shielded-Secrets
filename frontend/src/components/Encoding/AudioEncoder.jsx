@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import "./audioEncoder.css";
+import "./encoding.css";
 import toast from "react-hot-toast";
 import Spinner from "react-bootstrap/Spinner";
 
