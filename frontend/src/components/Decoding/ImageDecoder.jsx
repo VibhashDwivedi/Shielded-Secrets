@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import './decoding.css';
+import "./decoding.css";
 import toast from "react-hot-toast";
 import { Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const ImageDecoder = () => {
   const [imageFile, setImageFile] = useState(null);
@@ -181,6 +182,20 @@ const ImageDecoder = () => {
                         The decoded message will be displayed below.
                       </li>
                     </ul>
+                    <p className="mb-4 para text-start mx-3">
+                      Note: Only PNG image files are supported.
+                    </p>
+                    <p className="fw-bold para text-start mx-3">
+                      Want to decode using LPS? Click on the button below.
+                    </p>
+                    <div className="d-flex justify-content-center">
+                      <Link
+                        to="/lps-decode"
+                        className="btn btn-lg btn-dark rounded-2 mt-1 fw-bolder"
+                      >
+                        LPS Decoder
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>

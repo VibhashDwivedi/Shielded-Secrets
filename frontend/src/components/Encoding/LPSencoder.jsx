@@ -5,12 +5,13 @@ import "./encoding.css";
 import { toast } from "react-hot-toast";
 import Swal from "sweetalert2";
 import Spinner from "react-bootstrap/Spinner";
+import { Link } from "react-router-dom";
 
 const ImageEncoder2 = () => {
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const [encodedImage, setEncodedImage] = useState(null);
-  const [startingPixel, setStartingPixel] = useState(null)
+  const [startingPixel, setStartingPixel] = useState(null);
   const [encodin, setEncodin] = useState(false);
 
   const handleImageChange = (event) => {
@@ -71,9 +72,10 @@ const ImageEncoder2 = () => {
           console.log(data);
 
           Swal.fire({
-            title: 'Starting Pixel',
-            text: `The starting pixel is (${data.startingPixel})`,
-            icon: 'success',
+            title: "Starting Pixel",
+            html: `<p style="font-size: 20px; font-weight:600">The starting pixel is (${data.startingPixel}).</p>
+         <p style="font-size: 16px;">Save it for decoding the message.</p>`,
+            icon: "info",
           });
         })
         .catch((error) => {
@@ -89,8 +91,10 @@ const ImageEncoder2 = () => {
     <div className="container mt-5 pb-4">
       <div className="card shadow-lg border-0 ">
         <div className="card-body ">
-          <h1 className=" encoder-head">Image Encoder 2</h1>
-          <p className="mb-4 para">Encode Your Message in an Image!!</p>
+          <h1 className=" encoder-head">LPS Encoder</h1>
+          <p className="mb-4 para">
+            Encode Your Message in an Image using Linked Pixel Steganography!!
+          </p>
           <div className="row">
             <div className="col-md-7 ">
               <div className="container">
@@ -216,6 +220,7 @@ const ImageEncoder2 = () => {
                     )}
                   </div>
                 </div>
+               
               </div>
             </div>
             <div className="col-md-5">
@@ -238,6 +243,12 @@ const ImageEncoder2 = () => {
                       </li>
                       <li className="para text-start">
                         Click on the 'Encode' button.
+                      </li>
+                      <li className="para text-start">
+                        After the encoding process, a pop-up will appear showing
+                        the starting pixel coordinates. Note down these
+                        coordinates as they will be needed for decoding the
+                        message.
                       </li>
                       <li className="para text-start">
                         The encoded image will be displayed below.

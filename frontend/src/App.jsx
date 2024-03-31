@@ -14,8 +14,8 @@ import Decoder from "./components/pages/Decoder/Decoder";
 import About from "./components/pages/About/About";
 import VideoEncoder from "./components/Encoding/VideoEncoder";
 import VideoDecoder from "./components/Decoding/VideoDecoder";
-import ImageEncoder2 from "./components/Encoding/ImageEncoder2";
-import ImageDecoder2 from "./components/Decoding/imageDecode2";
+import ImageEncoder2 from "./components/Encoding/LPSencoder";
+import ImageDecoder2 from "./components/Decoding/LPSdecoder";
 
 function App() {
   return (
@@ -37,7 +37,7 @@ function App() {
           <Route path="/text-decoder" element={<TextDecoder />} />
           <Route path="/video-encoder" element={<VideoEncoder />} />
           <Route path="/video-decoder" element={<VideoDecoder />} />
-          <Route path='/lps' element={<ImageEncoder2/>} />
+          <Route path='/lps-encode' element={<ImageEncoder2/>} />
           <Route path='/lps-decode' element={<ImageDecoder2/>} />
           <Route path="*" element={<Home />} />
         </Routes>

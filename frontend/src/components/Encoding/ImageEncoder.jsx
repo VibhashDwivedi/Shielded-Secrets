@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import "./encoding.css";
 import { toast } from "react-hot-toast";
 import Spinner from "react-bootstrap/Spinner";
+import { Link } from "react-router-dom";
 
 const ImageEncoder = () => {
   const [imageFile, setImageFile] = useState(null);
@@ -233,6 +234,17 @@ const ImageEncoder = () => {
                         The encoded image will be displayed below.
                       </li>
                     </ul>
+                    <p className="fw-bold para text-start mx-3">
+                      Want to encode using LPS? Click on the button below.
+                    </p>
+                    <div className="d-flex justify-content-center">
+                      <Link
+                        to="/lps-encode"
+                        className="btn btn-lg btn-dark rounded-2 mt-1 fw-bolder"
+                      >
+                        LPS Encoder
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
