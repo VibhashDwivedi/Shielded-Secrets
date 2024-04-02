@@ -104,9 +104,7 @@ const Encoder = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    {/* <img src={poster} alt="" className='rounded-circle m-2 p-3' height={400} width={400}  /> */}
-                  </div>
+                  <div className="col-md-6"></div>
                 </div>
               </div>
             </div>

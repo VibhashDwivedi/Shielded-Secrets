@@ -1,25 +1,25 @@
+# Importing required libraries
 from flask import Blueprint, request
 from werkzeug.utils import secure_filename
-
 from PIL import Image
 from random import choice
-
 import binascii
 import base64
-import numpy as np
 import os
 import cv2
 
-
-
+# Blueprint for lps
 lps = Blueprint('lps', __name__)
 
+# Function to convert pixel number to coordinates.
 def pixelNumberToCoordinate(n, img):
     return (n%img.size[0], n//img.size[0])
 
+# Function to convert coordinates to pixel number.
 def coordinateToPixelNumber(x, y, img):
     return int(y*img.size[0]+x)
 
+# Function to set the least significant bit.
 def setLSB(v, state):
     if state == "0":
         return v & 0b11111110
@@ -29,6 +29,7 @@ def setLSB(v, state):
         print(f"invalide state: {state}")
         return v
 
+# Function to write a block of data and pointer to the next pixel in binary format at a given pixel
 def write(data, pixel, nextP, img):
     pix = img.load()
     x, y = pixelNumberToCoordinate(nextP, img)
@@ -37,7 +38,6 @@ def write(data, pixel, nextP, img):
     col = bin(x)[2:].zfill(l)
     # binari representation of next pixel y
     lin = bin(y)[2:].zfill(l)
-
     for i in range(pixel, pixel+l):
         p = pix[pixelNumberToCoordinate(i, img)]
         if len(p) == 4:
@@ -54,12 +54,14 @@ def write(data, pixel, nextP, img):
             setLSB(p[1], col[i-pixel]),
             setLSB(p[2], lin[i-pixel]))
 
+# Function to convert a string to binary
 def toBin(string):
     print(string)
     x = ''.join(format(ord(i), '08b') for i in string)
     print(x)
     return x
 
+# Function to convert binary to string
 def binToString(i):
     if len(i) % 8 != 0:
         r = 8-(len(i)%8)
@@ -69,10 +71,11 @@ def binToString(i):
         h = "0"+h
     return binascii.unhexlify(h)[:-1]
 
-
+# Function to chunk a string into blocks of a given length
 def chunkstring(string, length):
     return [string[0+i:length+i].ljust(length, "0") for i in range(0, len(string), length)]
 
+# Function to get the data from a given pixel
 def getData(img, startX, startY):
     startX = int(startX)
     startY = int(startY)
@@ -103,8 +106,7 @@ def getData(img, startX, startY):
     ny = int(ny, 2)
     return (s,(nx, ny))
 
-
-
+# Function to encode the data in the image
 def encode_img_data(data, imgName, startingPixel=(0,0)):
     outName = 'stego_image.png'
     img = Image.open(imgName)
@@ -116,7 +118,6 @@ def encode_img_data(data, imgName, startingPixel=(0,0)):
     # Check if the last position is big enough
     if AVAILABLE[-1] + BLOCKLEN >= total:
         AVAILABLE.pop()
-
     d = chunkstring(toBin(data),BLOCKLEN)
     n = len(d)
     # choose the first pixel
@@ -140,6 +141,7 @@ def encode_img_data(data, imgName, startingPixel=(0,0)):
     print(startingPixel)
     return startingPixel
 
+# Function to decode the data from the image
 def decode_img_data(imgName, startX, startY):
     print(imgName, startX, startY)
     img = Image.open(imgName)
@@ -150,7 +152,7 @@ def decode_img_data(imgName, startX, startY):
     print(data)      
     return binToString(data)
 
-
+# Route to encode the data in the image
 @lps.route('/encode-lps', methods=['POST'])
 def encode():
     stego_image = request.files['image']
@@ -162,12 +164,11 @@ def encode():
     save_path = os.path.join(directory, filename)
     stego_image.save(save_path)
     startingPixel = encode_img_data(data, save_path)
-
     with open('stego_image.png', "rb") as img_file:  # Open the encoded image file
         img_string = base64.b64encode(img_file.read()).decode('utf-8')
     return {'image': 'data:image/png;base64,' + img_string, 'startingPixel': startingPixel} # Return the encoded image as a base64 string
 
-
+# Route to decode the data from the image
 @lps.route('/decode-lps',  methods=['POST']  )
 def decode():
     stego_image = request.files['image']

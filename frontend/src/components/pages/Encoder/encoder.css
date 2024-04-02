@@ -11,7 +11,6 @@
     font-size: 2.2rem;
     font-weight: 700;
     color: white;
-
 }
 
 .vack{
@@ -21,29 +20,12 @@
     background-size: cover;
     height: auto;
     border: none;
-    
     color: white;
     font-size: 1.5rem;
     font-weight: 700;
     font-family: Montserrat;
-
-    
 }
-.vack3{
-    background-image: linear-gradient(90deg,rgba(10, 10, 10, 0.863) , rgba(107, 16, 211, 0)), url(../../../assets/images/welcome2.jpg);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    height: auto;
-    border: none;
-    
-    color: white;
-    font-size: 1.5rem;
-    font-weight: 700;
-    font-family: Montserrat;
 
-    
-}
 .vack2{
     background-image:  linear-gradient(90deg,rgba(10, 10, 10, 0.863) , rgba(107, 16, 211, 0)), url(../../../assets/images/welcome4.jpg);
     background-repeat: no-repeat;
@@ -51,14 +33,21 @@
     background-size: cover;
     height: auto;
     border: none;
-    
     color: white;
     font-size: 1.5rem;
     font-weight: 700;
     font-family: Montserrat;
-
-    
 }
 
-
-
+.vack3{
+    background-image: linear-gradient(90deg,rgba(10, 10, 10, 0.863) , rgba(107, 16, 211, 0)), url(../../../assets/images/welcome2.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: auto;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: Montserrat;
+}

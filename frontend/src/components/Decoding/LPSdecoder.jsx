@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import './decoding.css';
+import "./decoding.css";
 import toast from "react-hot-toast";
 import { Spinner } from "react-bootstrap";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 const ImageDecoder2 = () => {
   const [imageFile, setImageFile] = useState(null);
@@ -64,14 +64,11 @@ const ImageDecoder2 = () => {
             setImageUrl(null);
           } else if (response.status === 500) {
             toast.error("Error Encountered😔");
-            Swal.fire({
-              title: "Error",
-              text: "Invalid starting pixels. Please enter correct starting pixels.",
-              icon: "error",
-            });
-            return
+            return;
+          } else {
+            toast.error("Error Encountered😔");
+            return;
           }
-           else toast.error("Error Encountered😔");
           return response.text();
         })
         .then((data) => {
@@ -90,8 +87,10 @@ const ImageDecoder2 = () => {
     <div className="container mt-5 pb-4">
       <div className="card shadow-lg border-0 ">
         <div className="card-body">
-          <h1 className=" decoder-head">  LPS Decoder</h1>
-          <p className="mb-4 para">Decode Message hidden in an Image using Linked Pixel Steganography!!</p>
+          <h1 className=" decoder-head"> LPS Decoder</h1>
+          <p className="mb-4 para">
+            Decode Message hidden in an Image using Linked Pixel Steganography!!
+          </p>
           <div className="row">
             <div className="col-md-7 ">
               <div className="container">
@@ -204,31 +203,35 @@ const ImageDecoder2 = () => {
               </div>
             </div>
             <div className="col-md-5">
-  <div className="container">
-    <div className="card border-0">
-      <div className="card-body bg-info-subtle">
-        <h1 className="decoder-head">Instructions</h1>
-        <p className="mb-4 para">
-          Follow these steps to decode your message from an image file:
-        </p>
-        <ul>
-          <li className="para text-start">
-          Select an image file from which you wish to extract the secret message.
-          </li>
-          <li className="para text-start">
-            Enter the starting pixel coordinates . The coordinates should be two numbers separated by a comma i.e., x,y ; representing the x and y coordinates of the pixel.
-          </li>
-          <li className="para text-start">
-            Click on the 'Decode' button .
-          </li>
-          <li className="para text-start">
-            The decoded message will be displayed below.
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
+              <div className="container">
+                <div className="card border-0">
+                  <div className="card-body bg-info-subtle">
+                    <h1 className="decoder-head">Instructions</h1>
+                    <p className="mb-4 para">
+                      Follow these steps to decode your message from an image
+                      file:
+                    </p>
+                    <ul>
+                      <li className="para text-start">
+                        Select an image file from which you wish to extract the
+                        secret message.
+                      </li>
+                      <li className="para text-start">
+                        Enter the starting pixel coordinates . The coordinates
+                        should be two numbers separated by a comma i.e., x,y ;
+                        representing the x and y coordinates of the pixel.
+                      </li>
+                      <li className="para text-start">
+                        Click on the 'Decode' button .
+                      </li>
+                      <li className="para text-start">
+                        The decoded message will be displayed below.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

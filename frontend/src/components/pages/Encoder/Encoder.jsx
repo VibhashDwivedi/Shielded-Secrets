@@ -6,9 +6,6 @@ import "swiper/swiper-bundle.css";
 import Tilt from "vanilla-tilt";
 import "./encoder.css";
 
-// import 'swiper/css';
-// import 'swiper/css/effect-fade';
-
 const slides = [
   { key: "vack", backgroundColor: "#D0F0C0" },
   { key: "vack2", backgroundColor: "#D0F0C0" },
@@ -110,7 +107,6 @@ const Encoder = () => {
                     </div>
                   </div>
                   <div className="col-md-6">
-                    {/* <img src={poster} alt="" className='rounded-circle m-2 p-3' height={400} width={400}  /> */}
                   </div>
                 </div>
               </div>

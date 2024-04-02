@@ -1,17 +1,21 @@
+# Importing required libraries
 from flask import Blueprint, request
 from werkzeug.utils import secure_filename
-
 import base64
 import os
 
+# Importing the encryption and decryption functions from crypto.py
 from crypto import encryption, decryption
 
+# Blueprint for text steganography
 text_stegano = Blueprint('text_stegano', __name__)
 
+# Function to convert the message to binary
 def BinaryToDecimal(binary):
     string = int(binary, 2)
     return string
 
+# Function to encode the data in the text file
 def txt_encode(text, text_file, key):
     text = encryption(text, key)
     l=len(text)
@@ -24,7 +28,6 @@ def txt_encode(text, text_file, key):
             t2=t1^170       #170: 10101010
             res = bin(t2)[2:].zfill(8)
             add+="0011"+res
-        
         else:
             t1=t-48
             t2=t1^170
@@ -66,9 +69,9 @@ def txt_encode(text, text_file, key):
     file1.close()
     print("\nStego file has successfully generated")
 
+# Function to decode the data from the text file    
 def txt_decode(text_file, key):
     ZWC_reverse={u'\u200C':"00",u'\u202C':"01",u'\u202D':"11",u'\u200E':"10"}
-    
     stego=text_file
     file4= open(stego,"r", encoding="utf-8")
     temp=''
@@ -109,9 +112,7 @@ def txt_decode(text_file, key):
     final = decryption(final, key)
     return final
 
-
-
-
+# Route to encode the data in the text file
 @text_stegano.route('/encode_text', methods=['POST'])
 def encode_txt_data():
     txt_file = request.files['file']
@@ -128,6 +129,7 @@ def encode_txt_data():
         text_string = base64.b64encode(text_file.read()).decode('utf-8')
     return {'text': 'data:text/plain;base64,' + text_string, 'filename': 'stego_text.txt'}  # Return the encoded text as a base64 string
 
+# Route to decode the data from the text file
 @text_stegano.route('/decode_text', methods=['POST'])
 def decode_txt_data():
     stego_text = request.files['file']

@@ -18,30 +18,6 @@ const VideoDecoder = () => {
     setVideoUrl(URL.createObjectURL(e.target.files[0]));
   };
 
-  const handleVideoUpload = async () => {
-    let formData = new FormData();
-    formData.append('video', videoFile);
-
-    try {
-      const response = await axios.post('http://localhost:5000/upload_vid', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-
-      if (response.status === 200) {
-        console.log('Video uploaded successfully');
-        toast.success('Video uploaded successfully');
-      } else {
-        console.log('Failed to upload video');
-        toast.error('Failed to upload video');
-      }
-    } catch (error) {
-      console.error('An error occurred while uploading the video', error);
-      toast.error('An error occurred while uploading the video');
-    }
-  };
-
   const postSchema = Yup.object().shape({
     frameNumber: Yup.number().required('Required'),
     key: Yup.string().required('Required'),
@@ -60,16 +36,12 @@ const VideoDecoder = () => {
       formData.append('frame_num', values.frameNumber);
       formData.append('key', values.key);
       setDecodin(true);
-
       try {
         const response = await axios.post('http://localhost:5000/decode_vid', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
-
-        
-
         if (response.status === 200) {
           console.log('Video decoded successfully');
           toast.success('Decoded Successfully😊')
@@ -83,14 +55,13 @@ const VideoDecoder = () => {
         }
       } catch (error) {
         console.error('An error occurred while decoding the video', error);
-        toast.success('Decoded Successfully😊')
+        toast.error('Error Encountered😔')
       }
-
       setDecodin(false);
     },
     validationSchema: postSchema
   });
-
+  
   return (
     <div className='container mt-5 pb-4'>
     <div className="card shadow-lg border-0">
@@ -176,8 +147,6 @@ const VideoDecoder = () => {
       </div>
     </div>
   </div>
-    
   );
 };
-
 export default VideoDecoder;

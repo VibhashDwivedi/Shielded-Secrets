@@ -52,7 +52,10 @@ const TextDecoder = () => {
           if (response.status === 200) {
             toast.success("Decoded Successfully😊");
             setTextFile(null);
-          } else toast.error("Error Encountered😔");
+          } else {
+            toast.error("Error Encountered😔");
+            return;
+          }
           return response.text();
         })
         .then((data) => {

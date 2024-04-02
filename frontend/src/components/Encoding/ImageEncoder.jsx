@@ -231,7 +231,24 @@ const ImageEncoder = () => {
               </div>
             </div>
             <div className="col-md-5">
-              <div className="container">
+            <div className="container">
+                <div className="card border-0 lps-encoder-card">
+                  <div className="card-body ">
+                  <p className="fw-bold para text-start mx-3">
+                      Want to encode using LPS? Click on the button below.
+                    </p>
+                    <div className="d-flex justify-content-center">
+                      <Link
+                        to="/lps-encode"
+                        className="btn btn-lg btn-dark rounded-2 mt-1 fw-bolder"
+                      >
+                        LPS Encoder
+                      </Link>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              <div className="container mt-4">
                 <div className="card border-0">
                   <div className="card-body bg-info-subtle">
                     <h1 className="encoder-head">Instructions</h1>
@@ -255,17 +272,7 @@ const ImageEncoder = () => {
                         The encoded image will be displayed below.
                       </li>
                     </ul>
-                    <p className="fw-bold para text-start mx-3">
-                      Want to encode using LPS? Click on the button below.
-                    </p>
-                    <div className="d-flex justify-content-center">
-                      <Link
-                        to="/lps-encode"
-                        className="btn btn-lg btn-dark rounded-2 mt-1 fw-bolder"
-                      >
-                        LPS Encoder
-                      </Link>
-                    </div>
+                   
                   </div>
                 </div>
               </div>

@@ -1,39 +1,34 @@
+# Importing the required libraries
 from flask import Blueprint, request
 from werkzeug.utils import secure_filename
-
 import base64
 import os
 import wave
 
+# Importing the encryption and decryption functions from crypto.py
 from crypto import encryption, decryption
 
+# Blueprint for audio steganography
 audio_stegano = Blueprint('audio_stegano', __name__)
 
+# Function to encode the data in the audio file
 def encode_aud_data(data, audio_file, key):
-    
     data = encryption(data, key)
     nameoffile=audio_file
     song = wave.open(nameoffile, mode='rb')
-
     nframes=song.getnframes()
     frames=song.readframes(nframes)
     frame_list=list(frames)
     frame_bytes=bytearray(frame_list)
-
-    
-
     res = ''.join(format(i, '08b') for i in bytearray(data, encoding ='utf-8'))     
     print("\nThe string after binary conversion :- " + (res))   
     length = len(res)
     print("\nLength of binary after conversion :- ",length)
-
     data = data + '*^*^*'
-
     result = []
     for c in data:
         bits = bin(ord(c))[2:].zfill(8)
         result.extend([int(b) for b in bits])
-
     j = 0
     for i in range(0,len(result),1): 
         res = bin(frame_bytes[j])[2:].zfill(8)
@@ -43,9 +38,7 @@ def encode_aud_data(data, audio_file, key):
             frame_bytes[j] = (frame_bytes[j] & 253) | 2
             frame_bytes[j] = (frame_bytes[j] & 254) | result[i]
         j = j + 1
-    
     frame_modified = bytes(frame_bytes)
-
     stegofile='stego_audio.wav'
     with wave.open(stegofile, 'wb') as fd:
         fd.setparams(song.getparams())
@@ -53,16 +46,12 @@ def encode_aud_data(data, audio_file, key):
     print("\nEncoded the data successfully in the audio file.")    
     song.close()
 
+# Function to decode the data from the audio file
 def decode_aud_data(song, key):
-    
-
-    
-
     nframes=song.getnframes()
     frames=song.readframes(nframes)
     frame_list=list(frames)
     frame_bytes=bytearray(frame_list)
-
     extracted = ""
     p=0
     for i in range(len(frame_bytes)):
@@ -73,7 +62,6 @@ def decode_aud_data(song, key):
             extracted+=res[len(res)-4]
         else:
             extracted+=res[len(res)-1]
-    
         all_bytes = [ extracted[i: i+8] for i in range(0, len(extracted), 8) ]
         decoded_data = ""
         for byte in all_bytes:
@@ -85,10 +73,8 @@ def decode_aud_data(song, key):
                 print(key)
                 decoded_data = decryption(ciphertext, key)
                 return decoded_data
-                  
 
-
-
+# Route to encode the data in the audio file                        
 @audio_stegano.route('/encode_audio', methods=['POST'])
 def encode_audio():
     audio_file = request.files['audio']
@@ -106,10 +92,7 @@ def encode_audio():
       audio_string = base64.b64encode(audio_file.read()).decode('utf-8')
     return {'audio': 'data:audio/wav;base64,' + audio_string}  # Return the encoded audio as a base64 string
 
-
-
-
-
+# Route to decode the data from the audio file
 @audio_stegano.route('/decode_audio', methods=['POST'])
 def decode_audio():
     audio_file = request.files['audio']
@@ -122,8 +105,4 @@ def decode_audio():
     audio_file.save(save_path)
     song = wave.open(save_path, mode='rb')
     data = decode_aud_data(song, key)
-    
     return data
-
-
-

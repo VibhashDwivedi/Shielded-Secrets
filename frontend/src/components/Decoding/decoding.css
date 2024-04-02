@@ -31,3 +31,16 @@
     background-color: rgb(243, 243, 149);
     border-bottom: black 2px solid;
 }
+
+/* To change colors of LPS Decoder card in ImageDecoder.jsx*/
+@keyframes colorChange {
+    0% { background-color: #fa8d8d; }  /* light red */
+    25% { background-color: #f8d189; }  /* light orange */
+    50% { background-color: #f7f78f; }  /* light yellow */
+    75% { background-color: #91f791; }  /* light green */
+    100% { background-color: #85f3f3; }  /* light blue */
+  }
+  
+  .lps-decoder-card {
+    animation: colorChange 5s infinite;
+  }

@@ -176,7 +176,24 @@ const ImageDecoder = () => {
               </div>
             </div>
             <div className="col-md-5">
-              <div className="container">
+            <div className="container">
+                <div className="card border-0 lps-decoder-card">
+                  <div className="card-body ">
+                  <p className="fw-bold para text-start mx-3">
+                      Want to decode using LPS? Click on the button below.
+                    </p>
+                    <div className="d-flex justify-content-center">
+                      <Link
+                        to="/lps-decode"
+                        className="btn btn-lg btn-dark rounded-2 mt-1 fw-bolder"
+                      >
+                        LPS Decoder
+                      </Link>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              <div className="container mt-3">
                 <div className="card border-0">
                   <div className="card-body bg-info-subtle">
                     <h1 className="decoder-head">Instructions</h1>
@@ -199,17 +216,7 @@ const ImageDecoder = () => {
                     <p className="mb-4 para text-start mx-3">
                       Note: Only PNG image files are supported.
                     </p>
-                    <p className="fw-bold para text-start mx-3">
-                      Want to decode using LPS? Click on the button below.
-                    </p>
-                    <div className="d-flex justify-content-center">
-                      <Link
-                        to="/lps-decode"
-                        className="btn btn-lg btn-dark rounded-2 mt-1 fw-bolder"
-                      >
-                        LPS Decoder
-                      </Link>
-                    </div>
+                    
                   </div>
                 </div>
               </div>

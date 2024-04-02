@@ -5,7 +5,6 @@ import "./encoding.css";
 import { toast } from "react-hot-toast";
 import Swal from "sweetalert2";
 import Spinner from "react-bootstrap/Spinner";
-import { Link } from "react-router-dom";
 
 const ImageEncoder2 = () => {
   const [imageFile, setImageFile] = useState(null);
