@@ -9,7 +9,7 @@ const Navbar = () => {
         <div className="container">
           <div className="navbar--container">
             <Link className="btn btn-dark text-bg-dark fs-1" to="/">
-              Shielded Secrets
+              <h1 className="name text-white">Shielded Secrets</h1>
             </Link>
           </div>
           <button
@@ -24,7 +24,7 @@ const Navbar = () => {
             <span className="navbar-toggler-icon" />
           </button>
 
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <div className="collapse navbar-collapse " id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
               <li className="nav-item mx-2 p-2">
                 <NavLink

@@ -1,0 +1,22 @@
+.home{
+    background-image: linear-gradient(0deg , rgba(107, 16, 211, 0) ,rgba(247, 243, 243, 0.205)), url('../../../assets/images/extra.jpg');
+    min-height: 100vh;
+    background-size: cover;
+    margin-top: -115px;
+    position: fixed;
+    width: 100%;
+}
+
+.shielded{
+    font-family:'Ma Shan Zheng', cursive;
+    font-size: 6.5rem;
+    margin-top: 30px;
+    text-shadow:     2px 2px 0 #000;
+}
+
+.secrets{
+    font-family: 'Montserrat', sans-serif;
+    /* font-size: 2.5rem; */
+    margin-top: 5px;
+    text-shadow:     2px 2px 0 #000;
+}
