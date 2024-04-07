@@ -266,6 +266,9 @@ const ImageEncoder = () => {
                         within the image file.
                       </li>
                       <li className="para text-start">
+                        Input the cryptography key for the encoding process.
+                      </li>
+                      <li className="para text-start">
                         Click on the 'Encode' button.
                       </li>
                       <li className="para text-start">

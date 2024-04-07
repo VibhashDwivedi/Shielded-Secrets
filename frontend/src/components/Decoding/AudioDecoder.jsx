@@ -184,6 +184,9 @@ const AudioDecoder = () => {
                         secret message.
                       </li>
                       <li className="para text-start">
+                        Input the cryptography key for the decoding process.
+                      </li>
+                      <li className="para text-start">
                         Click on the 'Decode' button.
                       </li>
                       <li className="para text-start">

@@ -24,7 +24,10 @@ const Navbar = () => {
             <span className="navbar-toggler-icon" />
           </button>
 
-          <div className="collapse navbar-collapse " id="navbarSupportedContent">
+          <div
+            className="collapse navbar-collapse "
+            id="navbarSupportedContent"
+          >
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
               <li className="nav-item mx-2 p-2">
                 <NavLink
@@ -54,16 +57,6 @@ const Navbar = () => {
                   to="/decoder"
                 >
                   Decoder
-                </NavLink>
-              </li>
-              <li className="nav-item mx-2 p-2">
-                <NavLink
-                  className="nav-link "
-                  activeClassName="active"
-                  aria-current="page"
-                  to="/about"
-                >
-                  About
                 </NavLink>
               </li>
             </ul>

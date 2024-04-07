@@ -11,7 +11,6 @@ import Navbar from "./components/Navbar/Navbar";
 import Home from "./components/pages/Home/Home";
 import Encoder from "./components/pages/Encoder/Encoder";
 import Decoder from "./components/pages/Decoder/Decoder";
-import About from "./components/pages/About/About";
 import VideoEncoder from "./components/Encoding/VideoEncoder";
 import VideoDecoder from "./components/Decoding/VideoDecoder";
 import ImageEncoder2 from "./components/Encoding/LPSencoder";
@@ -28,7 +27,6 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/encoder" element={<Encoder />} />
           <Route path="/decoder" element={<Decoder />} />
-          <Route path="/about" element={<About />} />
           <Route path="/audio-encoder" element={<AudioEncoder />} />
           <Route path="/audio-decoder" element={<AudioDecoder />} />
           <Route path="/image-encoder" element={<ImageEncoder />} />
