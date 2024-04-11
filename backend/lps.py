@@ -34,9 +34,9 @@ def write(data, pixel, nextP, img):
     pix = img.load()
     x, y = pixelNumberToCoordinate(nextP, img)
     l = len(data)
-    # binari representation of next pixel x
+    # binary representation of next pixel x
     col = bin(x)[2:].zfill(l)
-    # binari representation of next pixel y
+    # binary representation of next pixel y
     lin = bin(y)[2:].zfill(l)
     for i in range(pixel, pixel+l):
         p = pix[pixelNumberToCoordinate(i, img)]

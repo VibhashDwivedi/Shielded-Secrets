@@ -53,8 +53,10 @@ def txt_encode(text, text_file, key):
         x=""
         HM_SK=""
         while(j<12):
-            x=res1[j+i]+res1[i+j+1]
-            HM_SK+=ZWC[x]
+            if j+i < len(res1) and i+j+1 < len(res1):
+              x=res1[j+i]+res1[i+j+1]
+              if x in ZWC:  # Check if x is a valid key before using it
+                HM_SK+=ZWC[x]
             j+=2
         s1=s+HM_SK
         file3.write(s1)
